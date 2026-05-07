@@ -17,11 +17,15 @@ export const profile = {
 };
 
 export const stack = [
-  "Node.js",
-  "Express",
-  "MongoDB",
+  "TypeScript",
   "React",
   "Next.js",
+  "React-Native",
+  "Expo Go",
+  "Node.js",
+  "Express",
+  "MongoDB+Mongoose",
+  "PostgreSQL+Drizzle",
   "Tailwind CSS",
   "JWT",
   "OAuth",
