@@ -1,6 +1,6 @@
 # Aalam Patil Portfolio
 
-Next.js portfolio styled as a neo-brutal API documentation interface.
+Next.js portfolio with three Japanese-inspired themes: Sakura (soft cherry blossom pink, the default), Samurai (red and beige), and Moonlight (dark plum and pink). The header theme selector remembers your preference locally. Content follows a project-first layout: featured work, grouped toolkit, Hashnode writing, a short about section, and social links. Build updates and portfolio history are expandable.
 
 ## Scripts
 
@@ -8,6 +8,8 @@ Next.js portfolio styled as a neo-brutal API documentation interface.
 - `npm run build` creates the production build.
 - `npm run lint` runs ESLint.
 - `npm run start` serves the production build.
+
+Development output lives in `.next-dev`; production build and start use `.next`. This keeps `npm run build` from overwriting a running development server’s bundles and React client manifests. Restart `npm run dev` once after changing this configuration.
 
 ## Structure
 

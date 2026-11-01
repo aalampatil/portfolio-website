@@ -1,19 +1,20 @@
-import { CheckCircle2 } from "lucide-react";
 import { SectionShell } from "../SectionShell";
+
+const groups = [
+  { title: "Backend & APIs", description: "Server logic and identity", items: ["Node.js", "Express", "REST APIs", "JWT", "OAuth"] },
+  { title: "Data", description: "Storage and data access", items: ["MongoDB+Mongoose", "PostgreSQL+Drizzle"] },
+  { title: "Web & mobile", description: "Interfaces across screens", items: ["TypeScript", "React", "Next.js", "React-Native", "Expo Go", "Tailwind CSS"] },
+  { title: "Workflow", description: "Version control", items: ["Git"] },
+];
 
 export function StackSection({ stack }) {
   return (
-    <SectionShell
-      id="stack"
-      endpoint="/stack"
-      title="Tech Stack"
-      description="A quick dependency list for the type of work this portfolio is optimized to communicate."
-    >
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {stack.map((item) => (
-          <div key={item} className="neo-card flex items-center gap-3 p-4">
-            <CheckCircle2 className="text-[var(--chart-5)]" size={18} />
-            <span className="font-bold text-[var(--foreground)]">{item}</span>
+    <SectionShell id="stack" title="Tools I work with" description="My focus is on the backend, with web and mobile tools to bring projects together.">
+      <div className="toolkit-grid">
+        {groups.map((group, index) => (
+          <div className="toolkit-group" key={group.title}>
+            <span className="eyebrow">0{index + 1}</span><h3>{group.title}</h3><p>{group.description}</p>
+            <ul>{group.items.filter(item => stack.includes(item)).map(item => <li key={item}>{item.replaceAll("+", " / ").replace("React-Native", "React Native")}</li>)}</ul>
           </div>
         ))}
       </div>

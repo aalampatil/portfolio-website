@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { RightRail } from "./components/RightRail";
 import { SideNav } from "./components/SideNav";
 import { SiteHeader } from "./components/SiteHeader";
@@ -11,18 +11,34 @@ import { OverviewSection } from "./components/sections/OverviewSection";
 import { ProfileSection } from "./components/sections/ProfileSection";
 import { ProjectsSection } from "./components/sections/ProjectsSection";
 import { StackSection } from "./components/sections/StackSection";
-import { changelog, featuredTweets, navItems, previews, profile, projects, stack } from "./data/portfolio";
+import { changelog, featuredTweets, navItems, projects, stack } from "./data/portfolio";
 import { BLOGS_QUERY, HASHNODE_API_URL, POSTS_PER_PAGE } from "./lib/hashnode";
 
 export default function Home() {
+  const [theme, setTheme] = useState("sakura");
+
+  useEffect(() => {
+    let savedTheme = "sakura";
+    try {
+      const saved = localStorage.getItem("portfolio-theme");
+      if (["samurai", "sakura", "moonlight"].includes(saved)) savedTheme = saved;
+    } catch { /* Theme switching also works when storage is unavailable. */ }
+    setTheme(savedTheme);
+    document.documentElement.dataset.theme = savedTheme;
+  }, []);
+
+  function changeTheme(nextTheme) {
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    try { localStorage.setItem("portfolio-theme", nextTheme); } catch { /* Keep the selection for this visit. */ }
+  }
+
   const [posts, setPosts] = useState([]);
   const [blogStatus, setBlogStatus] = useState("idle");
   const [blogError, setBlogError] = useState("");
   const [endCursor, setEndCursor] = useState(null);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  const profileJson = useMemo(() => JSON.stringify(profile, null, 2), []);
 
   async function fetchBlogs({ after = null, append = false } = {}) {
     try {
@@ -78,17 +94,15 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--background)]">
-      <SiteHeader />
-
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-8 md:px-6 lg:grid-cols-[17rem_1fr_20rem]">
-        <SideNav items={navItems} />
-
-        <div>
-          <OverviewSection onFetchBlogs={fetchBlogs} />
-          <ProfileSection profileJson={profileJson} />
+    <main className="min-h-screen">
+      <a href="#projects" className="skip-link">Skip to selected work</a>
+      <SiteHeader theme={theme} onThemeChange={changeTheme} />
+      <OverviewSection theme={theme} />
+      <SideNav items={navItems} />
+      <div className="portfolio-layout">
+        <div className="portfolio-content">
           <ProjectsSection projects={projects} />
-          <LivePreviewSection previews={previews} tweets={featuredTweets} />
+          <StackSection stack={stack} />
           <BlogsSection
             posts={posts}
             blogStatus={blogStatus}
@@ -98,12 +112,16 @@ export default function Home() {
             onFetchBlogs={() => fetchBlogs()}
             onLoadMore={() => fetchBlogs({ after: endCursor, append: true })}
           />
-          <StackSection stack={stack} />
-          <ChangelogSection changelog={changelog} />
+          <ProfileSection />
+          <div className="portfolio-extras">
+            <LivePreviewSection tweets={featuredTweets} />
+            <ChangelogSection changelog={changelog} />
+          </div>
         </div>
 
-        <RightRail />
       </div>
+      <RightRail />
+      <footer className="site-footer"><a href="#overview" className="brand"><span className="seal" aria-hidden="true">{theme === "samurai" ? "侍" : "桜"}</span>AALAM PATIL</a><p>Built with intention. Refined with practice.</p><a href="#overview">Back to the top ↑</a></footer>
     </main>
   );
 }

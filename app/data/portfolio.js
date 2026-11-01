@@ -1,11 +1,9 @@
 export const navItems = [
-  { id: "overview", label: "Overview", method: "GET" },
-  { id: "profile", label: "Profile", method: "GET" },
-  { id: "projects", label: "Projects", method: "GET" },
-  { id: "live-preview", label: "Live Preview", method: "GET" },
-  { id: "blogs", label: "Blogs", method: "GET" },
-  { id: "stack", label: "Stack", method: "GET" },
-  { id: "changelog", label: "Changelog", method: "GET" },
+  { id: "projects", label: "Work" },
+  { id: "stack", label: "Toolkit" },
+  { id: "blogs", label: "Writing" },
+  { id: "profile", label: "About" },
+  { id: "contact", label: "Connect" },
 ];
 
 export const profile = {
@@ -117,6 +115,11 @@ export const featuredTweets = [
 ];
 
 export const changelog = [
+  {
+    version: "v3.0.0",
+    title: "The way of the craft",
+    detail: "A samurai-inspired portfolio with vermilion accents, paper textures, original artwork, and a new chapter-based layout.",
+  },
   {
     version: "v2.0.0",
     title: "Migrated portfolio to API docs theme",

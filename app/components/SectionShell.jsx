@@ -1,22 +1,16 @@
-import { MethodBadge } from "./MethodBadge";
+const chapters = {
+  projects: ["01", "作品", "THE WORK"],
+  stack: ["02", "道具", "THE TOOLKIT"],
+  blogs: ["03", "手記", "THE WRITING"],
+  profile: ["04", "人物", "THE PERSON"],
+};
 
-export function SectionShell({ id, method = "GET", endpoint, title, description, children }) {
+export function SectionShell({ id, title, description, children }) {
+  const [number, symbol, caption] = chapters[id] || ["", "", ""];
   return (
-    <section id={id} className="scroll-mt-24 border-t-2 border-[var(--border)] py-12">
-      <div className="mb-6 flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <MethodBadge method={method} />
-          <code className="border-2 border-[var(--border)] bg-[var(--secondary-background)] px-3 py-1 text-sm font-bold text-[var(--foreground)] shadow-[2px_2px_0_0_var(--border)]">
-            {endpoint}
-          </code>
-        </div>
-        <div>
-          <h2 className="text-2xl font-extrabold text-[var(--foreground)] md:text-3xl">{title}</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-800 md:text-base">
-            {description}
-          </p>
-        </div>
-      </div>
+    <section id={id} className="portfolio-section">
+      <div className="section-heading"><div><p className="eyebrow">{number} / {caption}</p><h2>{title}</h2></div><span className="section-symbol" aria-hidden="true">{symbol}</span></div>
+      {description && <p className="section-description">{description}</p>}
       {children}
     </section>
   );

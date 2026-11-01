@@ -1,81 +1,22 @@
-import { BookOpen, ExternalLink, Globe2, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
 import { SectionShell } from "../SectionShell";
 
-export function BlogsSection({
-  posts,
-  blogStatus,
-  blogError,
-  hasNextPage,
-  isLoadingMore,
-  onFetchBlogs,
-  onLoadMore,
-}) {
+export function BlogsSection({ posts, blogStatus, blogError, hasNextPage, isLoadingMore, onFetchBlogs, onLoadMore }) {
   return (
-    <SectionShell
-      id="blogs"
-      endpoint="/blogs?source=hashnode"
-      title="Published Notes"
-      description="Live Hashnode feed with cursor pagination. Fetch the first page, then keep loading more until the publication has no more posts."
-    >
-      <div className="neo-card p-5">
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Globe2 className="text-[var(--chart-5)]" size={20} />
-            <code className="text-sm font-bold text-[var(--foreground)]">aalampatilblogs.hashnode.dev</code>
-          </div>
-          <button
-            type="button"
-            onClick={onFetchBlogs}
-            disabled={blogStatus === "loading"}
-            className="neo-button inline-flex items-center gap-2 px-3 py-2 text-sm font-extrabold disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {blogStatus === "loading" ? <Loader2 className="animate-spin" size={16} /> : <BookOpen size={16} />}
-            {posts.length ? "Refresh" : "Fetch blogs"}
-          </button>
-        </div>
-
-        {blogStatus === "error" && (
-          <p className="border-2 border-[var(--border)] bg-[var(--chart-4)] p-3 text-sm font-bold text-[var(--foreground)]">
-            {blogError}
-          </p>
-        )}
-
-        {blogStatus === "success" && posts.length === 0 && (
-          <p className="text-sm text-zinc-800">No blogs found.</p>
-        )}
-
-        {posts.length > 0 && (
-          <div className="space-y-4">
-            {posts.map((post) => (
-              <article key={post.id} className="border-t-2 border-[var(--border)] pt-4 first:border-t-0 first:pt-0">
-                <a
-                  href={post.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex items-start gap-2 font-extrabold text-[var(--foreground)] underline decoration-[var(--main)] decoration-4 underline-offset-4"
-                >
-                  {post.title}
-                  <ExternalLink className="mt-1 opacity-60 group-hover:opacity-100" size={14} />
-                </a>
-                {post.brief && (
-                  <p className="mt-2 text-sm leading-6 text-zinc-800">{post.brief}</p>
-                )}
-              </article>
-            ))}
-          </div>
-        )}
-
-        {hasNextPage && (
-          <button
-            type="button"
-            onClick={onLoadMore}
-            disabled={isLoadingMore}
-            className="neo-button-secondary mt-5 inline-flex items-center gap-2 px-3 py-2 text-sm font-extrabold disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isLoadingMore && <Loader2 className="animate-spin" size={16} />}
-            {isLoadingMore ? "Loading..." : "Load more blogs"}
-          </button>
-        )}
+    <SectionShell id="blogs" title="Writing & learning" description="Technical notes on authentication, development, and lessons from building projects.">
+      <div className="writing-intro">
+        <div><span className="eyebrow">MY TECHNICAL JOURNAL</span><h3>Learning, written down.</h3><p>Read my published notes on Hashnode, or browse the latest entries here.</p></div>
+        <a className="neo-button-secondary" href="https://aalampatilblogs.hashnode.dev" target="_blank" rel="noreferrer">Visit publication <ArrowUpRight size={16} /></a>
+      </div>
+      <div className="writing-status" aria-live="polite">
+        {blogStatus === "loading" && <p className="loading-note"><Loader2 size={16} className="animate-spin" /> Loading the latest entries…</p>}
+        {blogStatus === "error" && <p role="alert" className="writing-error">{blogError} You can still read the publication on Hashnode.</p>}
+        {blogStatus === "success" && posts.length === 0 && <p>No entries to show yet.</p>}
+      </div>
+      {posts.length > 0 && <div className="writing-grid">{posts.map(post => <article className="writing-card" key={post.id}><span className="eyebrow">TECHNICAL NOTE</span><h3><a href={post.url} target="_blank" rel="noreferrer">{post.title}<ArrowUpRight size={17} /></a></h3>{post.brief && <p>{post.brief}</p>}<a className="writing-read" href={post.url} target="_blank" rel="noreferrer">Read article <span className="sr-only">: {post.title}</span>↗</a></article>)}</div>}
+      <div className="writing-actions">
+        <button type="button" onClick={onFetchBlogs} disabled={blogStatus === "loading" || isLoadingMore} className="neo-button-secondary">{blogStatus === "loading" ? "Loading…" : posts.length ? "Refresh entries" : blogStatus === "error" ? "Try again" : "Browse latest entries"}</button>
+        {hasNextPage && <button type="button" onClick={onLoadMore} disabled={isLoadingMore || blogStatus === "loading"} className="neo-button">{isLoadingMore ? "Loading…" : "Load more entries"}</button>}
       </div>
     </SectionShell>
   );

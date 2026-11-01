@@ -1,56 +1,35 @@
-import { ExternalLink, Link as LinkIcon } from "lucide-react";
-import { MethodBadge } from "../MethodBadge";
+import { ArrowUpRight } from "lucide-react";
 import { SectionShell } from "../SectionShell";
 
 export function ProjectsSection({ projects }) {
+  const featured = projects.slice(0, 2);
+  const otherProjects = projects.slice(2);
+
   return (
-    <SectionShell
-      id="projects"
-      endpoint="/projects"
-      title="Projects"
-      description="Project records are structured like API resources, with active deployments linked directly from each resource card."
-    >
-      <div className="grid gap-4">
-        {projects.map((project) => (
-          <article key={project.name} className="neo-card p-5">
-            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-              <div>
-                <div className="mb-3 flex flex-wrap items-center gap-3">
-                  <MethodBadge method={project.method} />
-                  <code className="text-sm font-bold text-[var(--foreground)]">{project.endpoint}</code>
-                  <span className="border-2 border-[var(--border)] bg-[var(--chart-1)] px-2 py-1 text-xs font-extrabold text-[var(--foreground)]">
-                    {project.status}
-                  </span>
-                </div>
-                <h3 className="text-xl font-extrabold text-[var(--foreground)]">{project.name}</h3>
-                <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-800">
-                  {project.description}
-                </p>
-              </div>
-              {project.url ? (
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="neo-button inline-flex shrink-0 items-center gap-2 px-3 py-2 text-sm font-extrabold"
-                >
-                  Live
-                  <ExternalLink size={15} />
-                </a>
-              ) : (
-                <span className="inline-flex shrink-0 items-center gap-2 border-2 border-[var(--border)] bg-zinc-200 px-3 py-2 text-sm font-bold text-zinc-600">
-                  Link pending
-                  <LinkIcon size={15} />
-                </span>
-              )}
+    <SectionShell id="projects" title="Selected projects" description="A closer look at what I’m building, from authentication flows to everyday web tools.">
+      <div className="featured-projects">
+        {featured.map((project, index) => (
+          <article className="featured-project" key={project.name}>
+            <div className="project-card-top"><span className="eyebrow">PROJECT / 0{index + 1}</span><span className="live-badge">{project.status}</span></div>
+            <div className="project-glyph" aria-hidden="true">{index === 0 ? <><span>W</span><span>O</span><span>R</span><span>D</span><span>L</span><span>E</span></> : <span className="identity-glyph">{'{ identity }'}</span>}</div>
+            <div className="project-card-body">
+              <p className="eyebrow">{index === 0 ? "WEB APP · AUTHENTICATION" : "IDENTITY · ACCESS"}</p>
+              <h3><a href={project.url} target="_blank" rel="noreferrer">{project.name}</a></h3>
+              <p>{project.description}</p>
+              <div className="profile-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
+              <a className="project-visit" href={project.url} target="_blank" rel="noreferrer">Explore project <ArrowUpRight size={17} /><span className="sr-only">: {project.name}</span></a>
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span key={tag} className="border-2 border-[var(--border)] bg-[var(--chart-2)] px-2 py-1 text-xs font-bold text-[var(--foreground)]">
-                  {tag}
-                </span>
-              ))}
-            </div>
+          </article>
+        ))}
+      </div>
+      <div className="collection-heading"><h3>More from the collection</h3><span>{otherProjects.length.toString().padStart(2, "0")} PROJECTS</span></div>
+      <div className="small-projects">
+        {otherProjects.map((project, index) => (
+          <article className="small-project" key={project.name}>
+            <div className="small-project-heading"><span className="eyebrow">0{index + 3}</span><ArrowUpRight size={18} aria-hidden="true" /></div>
+            <h3><a href={project.url} target="_blank" rel="noreferrer">{project.name}</a></h3>
+            <p>{project.description}</p>
+            <div className="profile-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
           </article>
         ))}
       </div>
