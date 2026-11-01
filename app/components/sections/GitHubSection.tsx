@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowUpRight, GitBranch, Star } from "lucide-react";
 import snapshot from "../../data/github.json";
 import { GITHUB_PROFILE } from "../../lib/github";
+import { getProjectWebsite } from "../../lib/project-links";
 import { SectionShell } from "../SectionShell";
 import { JapaneseText } from "../JapaneseText";
 import type { CSSProperties, KeyboardEvent } from "react";
@@ -62,14 +63,20 @@ export function GitHubSection() {
     <SectionShell id="projects" title="Selected work, straight from GitHub." description="The projects I’ve pinned on my GitHub profile. This selection refreshes every hour.">
       <div className="github-heading"><div><p className="eyebrow"><JapaneseText text="固定" /> / PINNED REPOSITORIES</p><h3>From the workshop</h3></div><a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">View GitHub profile <ArrowUpRight size={16} /></a></div>
       <div className="github-repositories" id="github-repositories">
-        {repositories.map(repo => (
+        {repositories.map(repo => {
+          const website = getProjectWebsite(repo);
+          return (
           <article className="github-repo" key={repo.name}>
             <div className="github-repo-top"><GitBranch size={18} aria-hidden="true" /><span>{repo.language || "Source code"}</span>{repo.stars > 0 && <span className="repo-stars"><Star size={12} aria-hidden="true" />{repo.stars}<span className="sr-only"> stars</span></span>}</div>
-            <h3><a href={repo.url} target="_blank" rel="noreferrer">{repo.name}<ArrowUpRight size={16} aria-hidden="true" /></a></h3>
+            <h3>{website ? <a href={website} target="_blank" rel="noreferrer">{repo.name}<ArrowUpRight size={16} aria-hidden="true" /></a> : repo.name}</h3>
             {repo.description && <p>{repo.description}</p>}
-            <div className="github-repo-footer"><span>Updated {formatDate(repo.updatedAt)}</span><a href={repo.url} target="_blank" rel="noreferrer">View source<span className="sr-only"> for {repo.name}</span> ↗</a></div>
+            <div className="github-repo-footer"><span>Updated {formatDate(repo.updatedAt)}</span><div className="github-repo-actions">
+              {website ? <a className="project-website-link" href={website} target="_blank" rel="noreferrer">Visit project<span className="sr-only">: {repo.name}</span> ↗</a> : <span className="project-website-missing">Live site not listed</span>}
+              <a href={repo.url} target="_blank" rel="noreferrer">View source<span className="sr-only"> for {repo.name}</span> ↗</a>
+            </div></div>
           </article>
-        ))}
+          );
+        })}
       </div>
       {repositories.length === 0 && <p className="writing-status">No projects are currently pinned on GitHub.</p>}
 

@@ -420,6 +420,9 @@ code, pre, .eyebrow { font-family: "IBM Plex Mono", monospace; }
 .github-repo > p { font-size: 12px; line-height: 1.8; color: var(--muted); }
 .github-repo-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); font-size: 10px; }
 .github-repo-footer > span { color: var(--muted); }
+.github-repo-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; width: 100%; }
+.github-repo-actions .project-website-link { color: var(--main); font-weight: 600; }
+.project-website-missing { color: var(--muted); }
 .github-expand { margin-top: 22px; cursor: pointer; }
 .github-activity { margin-top: 48px; padding: 30px; border: 1px solid var(--border); background: var(--card-background); }
 .github-stats { display: flex; align-items: center; gap: 45px; border-block: 1px solid var(--border); padding: 24px 0; margin-bottom: 26px; }

@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import snapshot from "../app/data/github.json" with { type: "json" };
 import type { GitHubData } from "../app/types";
+import { getProjectWebsite } from "../app/lib/project-links";
 
 let currentData: GitHubData;
 
@@ -34,6 +35,21 @@ test("only pinned repositories appear, and a changed pin list updates after an h
   await page.clock.fastForward(60 * 60 * 1000);
   await expect(page.locator(".github-repo")).toHaveCount(1);
   await expect(page.locator(".github-repo h3")).toHaveText("newly-pinned-project");
+});
+
+test("project titles open their websites and source links remain separate", async ({ page }) => {
+  for (const repo of snapshot.repositories) {
+    const card = page.locator(".github-repo").filter({ has: page.getByRole("heading", { name: repo.name, exact: true }) });
+    const website = getProjectWebsite(repo);
+    if (website) {
+      await expect(card.locator("h3 a")).toHaveAttribute("href", website);
+      await expect(card.getByRole("link", { name: /Visit project/ })).toHaveAttribute("href", website);
+    } else {
+      await expect(card.locator("h3 a")).toHaveCount(0);
+      await expect(card.getByText("Live site not listed")).toBeVisible();
+    }
+    await expect(card.getByRole("link", { name: /View source/ })).toHaveAttribute("href", repo.url);
+  }
 });
 
 test("Japanese translations work with hover, keyboard, and touch", async ({ page }) => {

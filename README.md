@@ -21,6 +21,8 @@ Next.js generates `next-env.d.ts` for the active build directory. It is ignored 
 
 ## Structure
 
+Project titles and “Visit project” links open the URL configured in `app/data/portfolio.ts`, falling back to GitHub’s Website field for new pinned projects. Repository links are kept separately as “View source.” Projects without a known live URL display “Live site not listed” instead of linking their title to GitHub.
+
 The hero includes a CSS 3D code cube, pointer-driven landscape depth, and a pause control. Section headings reveal gently as they enter the viewport in supporting browsers. Reduced-motion preferences stop these effects; touch input does not tilt the artwork.
 
 - `app/components` contains shared UI and layout components.
