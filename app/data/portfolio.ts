@@ -36,6 +36,16 @@ export const stack = [
 
 export const projects: Project[] = [
   {
+    name: "llop-ap",
+    status: "Live",
+    method: "GET",
+    endpoint: "/projects/llop-ap",
+    url: "https://llop-ap.aalampatil.online/",
+    description:
+      "A full-stack polling app for creating polls, sharing public links, collecting responses, and exploring real-time results.",
+    tags: ["TypeScript", "React", "Socket.IO"],
+  },
+  {
     name: "oidc-ap",
     status: "Live",
     method: "GET",
