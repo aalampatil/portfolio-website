@@ -1,22 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RightRail } from "./components/RightRail";
-import { SideNav } from "./components/SideNav";
-import { SiteHeader } from "./components/SiteHeader";
-import { BlogsSection } from "./components/sections/BlogsSection";
-import { ChangelogSection } from "./components/sections/ChangelogSection";
-import { LivePreviewSection } from "./components/sections/LivePreviewSection";
-import { OverviewSection } from "./components/sections/OverviewSection";
-import { ProfileSection } from "./components/sections/ProfileSection";
-import { StackSection } from "./components/sections/StackSection";
-import { GitHubSection } from "./components/sections/GitHubSection";
-import { JapaneseText } from "./components/JapaneseText";
-import { changelog, featuredTweets, navItems, stack } from "./data/portfolio";
-import { BLOGS_QUERY, HASHNODE_API_URL, POSTS_PER_PAGE } from "./lib/hashnode";
-import type { BlogPost, BlogStatus, HashnodeResponse, InkMode } from "./types";
+import { RightRail } from "@/components/RightRail";
+import { SideNav } from "@/components/SideNav";
+import { SiteHeader } from "@/components/SiteHeader";
+import { BlogsSection } from "@/components/sections/BlogsSection";
+import { ChangelogSection } from "@/components/sections/ChangelogSection";
+import { LivePreviewSection } from "@/components/sections/LivePreviewSection";
+import { OverviewSection } from "@/components/sections/OverviewSection";
+import { ProfileSection } from "@/components/sections/ProfileSection";
+import { StackSection } from "@/components/sections/StackSection";
+import { GitHubSection } from "@/components/sections/GitHubSection";
+import { JapaneseText } from "@/components/JapaneseText";
+import { changelog, featuredTweets, navItems, stack } from "@/data/portfolio";
+import { BLOGS_QUERY, HASHNODE_API_URL, POSTS_PER_PAGE } from "@/lib/hashnode";
+import type { BlogPost, BlogStatus, HashnodeResponse, InkMode } from "@/types/portfolio";
 
-export default function Home() {
+export function Portfolio() {
   const [mode, setMode] = useState<InkMode>("dark");
 
   useEffect(() => {

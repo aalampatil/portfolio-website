@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import type { BuildUpdate } from "../../types";
+import type { BuildUpdate } from "@/types/portfolio";
 
 export function LivePreviewSection({ tweets }: { tweets: BuildUpdate[] }) {
   return (

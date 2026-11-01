@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getProjectWebsite } from "../app/lib/project-links";
+import { getProjectWebsite } from "@/lib/project-links";
 
 test("published websites are used and reflect GitHub Website field changes", () => {
   const repo = { url: "https://github.com/aalampatil/new-app", homepage: "https://my-app.example" };

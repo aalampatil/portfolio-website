@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { normalizeRepositories, parseContributions, parsePinnedRepositories } from "../app/lib/github";
+import { normalizeRepositories, parseContributions, parsePinnedRepositories } from "@/lib/github";
 
 test("repository import shows only pins in profile order, including explicitly pinned forks", () => {
   const base = { name: "new-project", full_name: "aalampatil/new-project", pushed_at: "2026-11-01", html_url: "https://github.com/aalampatil/new-project", description: null, language: "TypeScript", stargazers_count: 0 };
@@ -44,7 +44,7 @@ test("changed or incomplete calendar responses are rejected instead of displayin
 });
 
 test("checked-in fallback has a complete, chronological calendar with valid activity levels", async () => {
-  const data = JSON.parse(await readFile(new URL("../app/data/github.json", import.meta.url), "utf8"));
+  const data = JSON.parse(await readFile(new URL("../src/data/github.json", import.meta.url), "utf8"));
   assert.ok(data.repositories.length > 5);
   assert.ok(data.contributions.length >= 365);
   assert.ok(!Number.isNaN(Date.parse(data.fetchedAt)));

@@ -1,4 +1,4 @@
-import { SectionShell } from "../SectionShell";
+import { SectionShell } from "@/components/SectionShell";
 
 const groups = [
   { title: "Backend & APIs", description: "Server logic and identity", items: ["Node.js", "Express", "REST APIs", "JWT", "OAuth"] },

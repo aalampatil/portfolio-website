@@ -1,6 +1,6 @@
-import type { GitHubRepository } from "../types";
-import { projects } from "../data/portfolio";
-import { GITHUB_PROFILE } from "./github";
+import type { GitHubRepository } from "@/types/portfolio";
+import { projects } from "@/data/portfolio";
+import { GITHUB_PROFILE } from "@/lib/github";
 
 const projectAliases: Record<string, string> = { "deadlink-ap": "deadlink" };
 

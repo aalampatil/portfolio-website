@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { JapaneseText } from "../JapaneseText";
-import { ArtworkMotion } from "../ArtworkMotion";
-import { InkLandscape } from "../InkLandscape";
+import { JapaneseText } from "@/components/JapaneseText";
+import { ArtworkMotion } from "@/components/ArtworkMotion";
+import { InkLandscape } from "@/components/InkLandscape";
 
 export function OverviewSection() {
   return (

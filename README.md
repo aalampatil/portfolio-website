@@ -23,15 +23,18 @@ Next.js generates `next-env.d.ts` for the active build directory. It is ignored 
 
 If local Atlas lookups fail with `querySrv ECONNREFUSED`, optionally set `MONGODB_DNS_SERVERS=1.1.1.1,8.8.8.8` in `.env.local`. This selects resolvers within the app process; it does not change system DNS. Leave it unset on hosts whose normal resolver already works.
 
-The footer visitor counter stores anonymous browser IDs in MongoDB and counts each ID once, so refreshes and duplicate React effects do not inflate it. Set `MONGODB_URI` and optionally `MONGODB_DATABASE` in `.env.local` for development and in the hosting environment for production. The default database is `portfolio-ap`, using the `portfolio_visitors` collection. No IP address or browser fingerprint is stored. A database outage displays an unavailable mark instead of an invented count.
+The header visitor counter stores anonymous browser IDs in MongoDB and counts each ID once, so refreshes and duplicate React effects do not inflate it. Set `MONGODB_URI` and optionally `MONGODB_DATABASE` in `.env.local` for development and in the hosting environment for production. The default database is `portfolio-ap`, using the `portfolio_visitors` collection. No IP address or browser fingerprint is stored. A database outage displays an unavailable mark instead of an invented count.
 
-Project titles and “Visit project” links open the URL configured in `app/data/portfolio.ts`, falling back to GitHub’s Website field for new pinned projects. Repository links are kept separately as “View source.” Projects without a known live URL display “Live site not listed” instead of linking their title to GitHub.
+Project titles and “Visit project” links open the URL configured in `src/data/portfolio.ts`, falling back to GitHub’s Website field for new pinned projects. Repository links are kept separately as “View source.” Projects without a known live URL display “Live site not listed” instead of linking their title to GitHub.
 
 The hero includes a CSS 3D code cube, pointer-driven landscape depth, a drifting crimson moon with a breathing halo, and a pause control. Japanese characters reveal like ink, move gently, and respond individually to hover or keyboard focus. Pausing the artwork also pauses the Japanese lettering. Section headings reveal gently as they enter the viewport in supporting browsers. Reduced-motion preferences stop these effects; touch input does not tilt the artwork. The inline SVG landscape uses the same geometry and colors in both Ink modes.
 
-- `app/components` contains shared UI and layout components.
-- `app/components/sections` contains one component per portfolio section.
-- `app/data/portfolio.ts` contains portfolio content.
-- `app/types.ts` defines shared portfolio, blog, and GitHub data types.
-- `app/lib/hashnode.ts` contains Hashnode feed configuration.
+- `src/app` contains App Router pages, layouts, global styles, favicon, and API route handlers.
+- `src/app/page.tsx` is a Server Component that renders the interactive `src/components/Portfolio.tsx` Client Component.
+- `src/components` contains shared UI and layout components; `src/components/sections` contains the portfolio sections.
+- `src/data/portfolio.ts` contains portfolio content; `src/data/github.json` is the GitHub fallback snapshot.
+- `src/types/portfolio.ts` defines shared portfolio, blog, and GitHub data types.
+- `src/lib` contains GitHub, Hashnode, project URL, and visitor database helpers.
+- `@/` imports resolve to `src/`. Scripts and tests use the same alias, while filesystem snapshot paths point to `src/data/`.
+- `public`, environment files, and framework configuration stay at the project root. `scripts`, `tests`, and the optional companion `server` remain separate from Next.js route files.
 - Application code, scripts, and tests use TypeScript. The companion Express server in `server/` also uses strict TypeScript; run its `build` script before `start`. ESLint and PostCSS retain their standard JavaScript configuration files.

@@ -1,4 +1,4 @@
-import type { RawGitHubRepository, GitHubRepository, ContributionDay } from "../types";
+import type { RawGitHubRepository, GitHubRepository, ContributionDay } from "@/types/portfolio";
 
 export const GITHUB_USER = "aalampatil";
 export const GITHUB_PROFILE = `https://github.com/${GITHUB_USER}`;

@@ -1,6 +1,6 @@
-import snapshot from "../../data/github.json";
-import { normalizeRepositories, parseContributions, parsePinnedRepositories } from "../../lib/github";
-import type { RawGitHubRepository, GitHubData } from "../../types";
+import snapshot from "@/data/github.json";
+import { normalizeRepositories, parseContributions, parsePinnedRepositories } from "@/lib/github";
+import type { RawGitHubRepository, GitHubData } from "@/types/portfolio";
 
 export const dynamic = "force-dynamic";
 

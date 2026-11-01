@@ -1,6 +1,6 @@
-import { JapaneseText } from "./JapaneseText";
+import { JapaneseText } from "@/components/JapaneseText";
 import type { ReactNode } from "react";
-import type { JapanesePhrase } from "./JapaneseText";
+import type { JapanesePhrase } from "@/components/JapaneseText";
 
 const chapters: Record<string, [string, JapanesePhrase, string]> = {
   projects: ["01", "作品", "THE WORK"],

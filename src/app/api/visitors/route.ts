@@ -1,4 +1,4 @@
-import { getVisitorCount, isVisitorId, registerVisitor } from "../../lib/visitors";
+import { getVisitorCount, isVisitorId, registerVisitor } from "@/lib/visitors";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

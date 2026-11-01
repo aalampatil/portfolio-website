@@ -1,4 +1,4 @@
-import type { NavItem, Project, ChangelogEntry, BuildUpdate } from "../types";
+import type { NavItem, Project, ChangelogEntry, BuildUpdate } from "@/types/portfolio";
 
 export const navItems: NavItem[] = [
   { id: "projects", label: "Work", number: "01" },

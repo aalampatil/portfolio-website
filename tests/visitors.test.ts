@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isVisitorId } from "../app/lib/visitors";
-import { GET, POST } from "../app/api/visitors/route";
+import { isVisitorId } from "@/lib/visitors";
+import { GET, POST } from "@/app/api/visitors/route";
 
 test("visitor IDs accept anonymous UUIDs and reject malformed input", () => {
   assert.ok(isVisitorId("f463a231-5ccd-49ec-9cde-b399bcdb009c"));

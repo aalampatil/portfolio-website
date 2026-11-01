@@ -1,5 +1,5 @@
-import { JapaneseText } from "./JapaneseText";
-import type { NavItem } from "../types";
+import { JapaneseText } from "@/components/JapaneseText";
+import type { NavItem } from "@/types/portfolio";
 
 export function SideNav({ items }: { items: NavItem[] }) {
   return (

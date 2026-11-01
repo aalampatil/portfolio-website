@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
-import { SectionShell } from "../SectionShell";
-import type { Project } from "../../types";
+import { SectionShell } from "@/components/SectionShell";
+import type { Project } from "@/types/portfolio";
 
 export function ProjectsSection({ projects }: { projects: Project[] }) {
   const featured = projects.slice(0, 2);

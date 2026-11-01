@@ -1,4 +1,4 @@
-import type { ChangelogEntry } from "../../types";
+import type { ChangelogEntry } from "@/types/portfolio";
 
 export function ChangelogSection({ changelog }: { changelog: ChangelogEntry[] }) {
   return (

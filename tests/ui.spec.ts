@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import snapshot from "../app/data/github.json" with { type: "json" };
-import type { GitHubData } from "../app/types";
-import { getProjectWebsite } from "../app/lib/project-links";
+import snapshot from "@/data/github.json" with { type: "json" };
+import type { GitHubData } from "@/types/portfolio";
+import { getProjectWebsite } from "@/lib/project-links";
 
 let currentData: GitHubData;
 let visitors: Set<string>;

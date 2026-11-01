@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpRight, GitBranch, Star } from "lucide-react";
-import snapshot from "../../data/github.json";
-import { GITHUB_PROFILE } from "../../lib/github";
-import { getProjectWebsite } from "../../lib/project-links";
-import { SectionShell } from "../SectionShell";
-import { JapaneseText } from "../JapaneseText";
+import snapshot from "@/data/github.json";
+import { GITHUB_PROFILE } from "@/lib/github";
+import { getProjectWebsite } from "@/lib/project-links";
+import { SectionShell } from "@/components/SectionShell";
+import { JapaneseText } from "@/components/JapaneseText";
 import type { CSSProperties, KeyboardEvent } from "react";
-import type { GitHubData, GitHubSource } from "../../types";
+import type { GitHubData, GitHubSource } from "@/types/portfolio";
 
 const shortDate = new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 const monthName = new Intl.DateTimeFormat("en", { month: "short", timeZone: "UTC" });

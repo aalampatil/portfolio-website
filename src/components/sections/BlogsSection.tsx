@@ -1,6 +1,6 @@
 import { ArrowUpRight, Loader2 } from "lucide-react";
-import { SectionShell } from "../SectionShell";
-import type { BlogPost, BlogStatus } from "../../types";
+import { SectionShell } from "@/components/SectionShell";
+import type { BlogPost, BlogStatus } from "@/types/portfolio";
 
 interface BlogsSectionProps {
   posts: BlogPost[];

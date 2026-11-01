@@ -1,5 +1,5 @@
-import { SectionShell } from "../SectionShell";
-import { profile } from "../../data/portfolio";
+import { SectionShell } from "@/components/SectionShell";
+import { profile } from "@/data/portfolio";
 
 export function ProfileSection() {
   return (

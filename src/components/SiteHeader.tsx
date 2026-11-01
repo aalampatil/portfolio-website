@@ -1,7 +1,7 @@
 import { ArrowUpRight, Sun, Moon } from "lucide-react";
-import { JapaneseText } from "./JapaneseText";
-import { VisitorCount } from "./VisitorCount";
-import type { InkMode } from "../types";
+import { JapaneseText } from "@/components/JapaneseText";
+import { VisitorCount } from "@/components/VisitorCount";
+import type { InkMode } from "@/types/portfolio";
 
 export function SiteHeader({ mode, onModeChange }: { mode: InkMode; onModeChange: () => void }) {
   return (

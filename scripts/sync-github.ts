@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
-import { normalizeRepositories, parseContributions, parsePinnedRepositories } from "../app/lib/github";
-import type { RawGitHubRepository, GitHubSnapshot } from "../app/types";
+import { normalizeRepositories, parseContributions, parsePinnedRepositories } from "@/lib/github";
+import type { RawGitHubRepository, GitHubSnapshot } from "@/types/portfolio";
 
 // Optional input files let an already fetched public response be reused offline.
 const [reposPath, calendarPath, profilePath] = process.argv.slice(2);
@@ -23,5 +23,5 @@ const snapshot: GitHubSnapshot = {
   repositories: normalizeRepositories(repos as RawGitHubRepository[], parsePinnedRepositories(profile)),
   contributions: parseContributions(calendar),
 };
-await writeFile(new URL("../app/data/github.json", import.meta.url), JSON.stringify(snapshot, null, 2) + "\n");
+await writeFile(new URL("../src/data/github.json", import.meta.url), JSON.stringify(snapshot, null, 2) + "\n");
 console.log(`Saved ${snapshot.repositories.length} repositories and ${snapshot.contributions.length} contribution days.`);
