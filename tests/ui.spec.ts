@@ -117,11 +117,16 @@ test("artwork responds to the pointer, pauses, and respects reduced motion", asy
   await page.getByRole("button", { name: "Pause animation" }).click();
   await expect(artwork).toHaveAttribute("data-motion", "paused");
   await expect(page.locator(".code-cube")).toHaveCSS("animation-play-state", "paused");
+  await expect(page.locator(".landscape-moon")).toHaveCSS("animation-play-state", "paused");
+  await expect(page.locator(".japanese-character").first()).toHaveCSS("animation-play-state", "paused");
   await page.getByRole("button", { name: "Resume animation" }).click();
   await expect(artwork).toHaveAttribute("data-motion", "active");
+  await expect(page.locator(".landscape-moon")).toHaveCSS("animation-name", "moon-drift");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(artwork).toHaveAttribute("data-motion", "paused");
   await expect(page.locator(".code-cube")).toHaveCSS("animation-name", "none");
+  await expect(page.locator(".landscape-moon")).toHaveCSS("animation-name", "none");
+  await expect(page.locator(".japanese-character").first()).toHaveCSS("animation-name", "none");
   await expect(page.locator(".artwork-motion .samurai-image")).toHaveCSS("transform", "none");
   await page.screenshot({ path: testInfo.outputPath("ink-dark.png"), fullPage: true });
   await page.getByRole("switch", { name: "Dark mode" }).click();

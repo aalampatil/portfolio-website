@@ -1,10 +1,9 @@
-import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { JapaneseText } from "../JapaneseText";
-import type { InkMode } from "../../types";
 import { ArtworkMotion } from "../ArtworkMotion";
+import { InkLandscape } from "../InkLandscape";
 
-export function OverviewSection({ mode }: { mode: InkMode }) {
+export function OverviewSection() {
   return (
     <section id="overview" className="hero">
       <div className="hero-copy">
@@ -15,7 +14,7 @@ export function OverviewSection({ mode }: { mode: InkMode }) {
         <div className="hero-footnote"><span>BASED IN HARYANA, INDIA</span><span>BUILD / LEARN / REPEAT</span></div>
       </div>
       <ArtworkMotion>
-        <Image src={mode === "light" ? "/images/ink-landscape-light.svg" : "/images/ink-landscape.svg"} alt="A crimson sun over layered mountains and a silhouetted pine tree" fill priority sizes="(max-width: 760px) 100vw, 50vw" className="samurai-image" />
+        <InkLandscape />
         <div className="art-lettering"><JapaneseText text="日々精進" /><span aria-hidden="true">MAKE<br />EVERY<br />DETAIL<br />COUNT.</span></div>
         <JapaneseText className="art-vertical" text="創造と探求" />
         <span className="art-caption"><JapaneseText text="小さな一歩" /> / ONE STEP AT A TIME</span>

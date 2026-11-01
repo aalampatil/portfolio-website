@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 const translations = {
   作: "Create",
@@ -86,7 +86,7 @@ export function JapaneseText({ text, children, className = "" }: { text: Japanes
         onFocus={() => { cancelClose(); setOpen(true); }} onBlur={() => { cancelClose(); setOpen(false); }}
         onClick={event => { event.preventDefault(); cancelClose(); setOpen(true); }}
         onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setOpen(value => !value); } }}>
-        <span lang="ja">{children || text}</span>
+        <span className="japanese-ink" lang="ja">{children || Array.from(text).map((character, index) => <span className="japanese-character" key={`${character}-${index}`} style={{ "--glyph-index": index } as CSSProperties}>{character}</span>)}</span>
       </span>
       {open && createPortal(
         <span ref={tooltip} role="tooltip" id={id} className="translation-tooltip" style={position} onMouseEnter={cancelClose} onMouseLeave={scheduleClose}>

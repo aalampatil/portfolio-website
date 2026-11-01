@@ -27,7 +27,7 @@ The footer visitor counter stores anonymous browser IDs in MongoDB and counts ea
 
 Project titles and “Visit project” links open the URL configured in `app/data/portfolio.ts`, falling back to GitHub’s Website field for new pinned projects. Repository links are kept separately as “View source.” Projects without a known live URL display “Live site not listed” instead of linking their title to GitHub.
 
-The hero includes a CSS 3D code cube, pointer-driven landscape depth, and a pause control. Section headings reveal gently as they enter the viewport in supporting browsers. Reduced-motion preferences stop these effects; touch input does not tilt the artwork.
+The hero includes a CSS 3D code cube, pointer-driven landscape depth, a drifting crimson moon with a breathing halo, and a pause control. Japanese characters reveal like ink, move gently, and respond individually to hover or keyboard focus. Pausing the artwork also pauses the Japanese lettering. Section headings reveal gently as they enter the viewport in supporting browsers. Reduced-motion preferences stop these effects; touch input does not tilt the artwork. The inline SVG landscape uses the same geometry and colors in both Ink modes.
 
 - `app/components` contains shared UI and layout components.
 - `app/components/sections` contains one component per portfolio section.

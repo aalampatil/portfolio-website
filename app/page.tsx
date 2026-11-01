@@ -100,7 +100,7 @@ export default function Home() {
     <main className="min-h-screen">
       <a href="#projects" className="skip-link">Skip to selected work</a>
       <SiteHeader mode={mode} onModeChange={changeMode} />
-      <OverviewSection mode={mode} />
+      <OverviewSection />
       <SideNav items={navItems} />
       <div className="portfolio-layout">
         <div className="portfolio-content">

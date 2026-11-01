@@ -11,6 +11,11 @@ export function ArtworkMotion({ children }: { children: ReactNode }) {
   const [reducedMotion, setReducedMotion] = useState(false);
   const motionOff = paused || reducedMotion;
 
+  useEffect(() => {
+    document.documentElement.dataset.motion = motionOff ? "paused" : "active";
+    return () => { delete document.documentElement.dataset.motion; };
+  }, [motionOff]);
+
   function resetTilt() {
     if (frame.current !== null) cancelAnimationFrame(frame.current);
     artwork.current?.style.setProperty("--art-x", "0");
