@@ -12,7 +12,7 @@ export const navItems: NavItem[] = [
 export const profile = {
   name: "Aalam Patil",
   role: "Software developer",
-  location: "Haryana, India",
+  location: "Internet",
   status: "Building projects and writing technical notes",
   focus: ["APIs", "Authentication", "Node.js", "System design basics"],
 };
@@ -121,26 +121,31 @@ export const changelog: ChangelogEntry[] = [
   {
     version: "v3.1.0",
     title: "Ink, contrast, and clearer stories",
-    detail: "A charcoal and crimson theme inspired by Japanese Android home screens, an original landscape illustration, and more focused project and profile copy.",
+    detail:
+      "A charcoal and crimson theme inspired by Japanese Android home screens, an original landscape illustration, and more focused project and profile copy.",
   },
   {
     version: "v3.0.0",
     title: "The way of the craft",
-    detail: "A samurai-inspired portfolio with vermilion accents, paper textures, original artwork, and a new chapter-based layout.",
+    detail:
+      "A samurai-inspired portfolio with vermilion accents, paper textures, original artwork, and a new chapter-based layout.",
   },
   {
     version: "v2.0.0",
     title: "Migrated portfolio to API docs theme",
-    detail: "Next.js app shell, docs navigation, project registry, live preview section, and Hashnode pagination.",
+    detail:
+      "Next.js app shell, docs navigation, project registry, live preview section, and Hashnode pagination.",
   },
   {
     version: "v1.3.0",
     title: "Added live Hashnode blog feed",
-    detail: "Blogs load from Hashnode GraphQL and support cursor-based pagination.",
+    detail:
+      "Blogs load from Hashnode GraphQL and support cursor-based pagination.",
   },
   {
     version: "v1.0.0",
     title: "Wikipedia profile theme",
-    detail: "Original single-page portfolio with profile, sections, blogs, projects, and social links.",
+    detail:
+      "Original single-page portfolio with profile, sections, blogs, projects, and social links.",
   },
 ];
