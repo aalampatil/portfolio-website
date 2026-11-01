@@ -17,6 +17,8 @@ The project list shows only repositories pinned on the GitHub profile, in profil
 
 Development output lives in `.next-dev`; production build and start use `.next`. This keeps `npm run build` from overwriting a running development server’s bundles and React client manifests. Restart `npm run dev` once after changing this configuration.
 
+Next.js generates `next-env.d.ts` for the active build directory. It is ignored so switching between development and production does not create generated-file changes in Git.
+
 ## Structure
 
 The hero includes a CSS 3D code cube, pointer-driven landscape depth, and a pause control. Section headings reveal gently as they enter the viewport in supporting browsers. Reduced-motion preferences stop these effects; touch input does not tilt the artwork.
