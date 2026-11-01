@@ -171,6 +171,8 @@ code, pre, .eyebrow { font-family: "IBM Plex Mono", monospace; }
 .site-footer .seal { height: 33px; width: 31px; font-size: 22px; }
 .visitor-count { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font: 10px "IBM Plex Mono", monospace; white-space: nowrap; }
 .visitor-count > svg { color: var(--main); }
+.header-actions .visitor-count { font-size: 9px; }
+@media (max-width: 520px) { .header-actions { flex: 1 1 100%; justify-content: space-between; } }
 @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 .hero-copy > * { animation: enter .7s both; }
 .hero-copy h1 { animation-delay: .1s; }

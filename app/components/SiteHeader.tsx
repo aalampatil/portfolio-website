@@ -1,5 +1,6 @@
 import { ArrowUpRight, Sun, Moon } from "lucide-react";
 import { JapaneseText } from "./JapaneseText";
+import { VisitorCount } from "./VisitorCount";
 import type { InkMode } from "../types";
 
 export function SiteHeader({ mode, onModeChange }: { mode: InkMode; onModeChange: () => void }) {
@@ -11,6 +12,7 @@ export function SiteHeader({ mode, onModeChange }: { mode: InkMode; onModeChange
       </a>
       <nav className="header-nav" aria-label="Main navigation"><a href="#projects">Work</a><a href="#blogs">Writing</a><a href="#contact">Connect</a></nav>
       <div className="header-actions">
+        <VisitorCount />
         <button type="button" className="mode-toggle" role="switch" aria-checked={mode === "dark"} aria-label="Dark mode" onClick={onModeChange}>
           {mode === "dark" ? <Moon size={15} aria-hidden="true" /> : <Sun size={15} aria-hidden="true" />}<span>Ink / {mode === "dark" ? "Dark" : "Light"}</span>
         </button>
