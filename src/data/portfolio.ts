@@ -87,21 +87,6 @@ export const projects: Project[] = [
   },
 ];
 
-export const previews = [
-  {
-    title: "Live Project Updates",
-    body: "Recent build notes and shipped work from the active project timeline.",
-  },
-  {
-    title: "API Playground",
-    body: "A future interactive panel can simulate requests like GET /projects or GET /blogs and render real portfolio data.",
-  },
-  {
-    title: "Build Notes",
-    body: "A changelog-style space for work in progress, recent experiments, and architecture decisions.",
-  },
-];
-
 export const featuredTweets: BuildUpdate[] = [
   {
     title: "Latest Build Update",

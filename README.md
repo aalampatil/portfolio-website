@@ -36,5 +36,6 @@ The hero includes a CSS 3D code cube, pointer-driven landscape depth, a drifting
 - `src/types/portfolio.ts` defines shared portfolio, blog, and GitHub data types.
 - `src/lib` contains GitHub, Hashnode, project URL, and visitor database helpers.
 - `@/` imports resolve to `src/`. Scripts and tests use the same alias, while filesystem snapshot paths point to `src/data/`.
-- `public`, environment files, and framework configuration stay at the project root. `scripts`, `tests`, and the optional companion `server` remain separate from Next.js route files.
-- Application code, scripts, and tests use TypeScript. The companion Express server in `server/` also uses strict TypeScript; run its `build` script before `start`. ESLint and PostCSS retain their standard JavaScript configuration files.
+- Environment files and framework configuration stay at the project root. `scripts` and `tests` remain separate from Next.js route files.
+- Backend endpoints live in `src/app/api`, with database access in `src/lib/visitors.ts`.
+- Application code, scripts, and tests use TypeScript. ESLint and PostCSS retain their standard JavaScript configuration files.
