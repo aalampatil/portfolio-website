@@ -14,7 +14,7 @@ app.use(
       "http://localhost:5173",
       "http://localhost:5174",
       process.env.CLIENT,
-    ],
+    ].filter((origin): origin is string => typeof origin === "string"),
   }),
 );
 
@@ -33,14 +33,13 @@ app.use("/api/features", featuresRouter);
 
 connectDB()
   .then(() => {
-    app.on("error", (error) => {
-      console.error("index.js connectDB on error", error);
-    });
-
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
       console.log(`server is listening on http://localhost:${port}`);
+    });
+    server.on("error", (error: Error) => {
+      console.error("Server startup error", error);
     });
   })
   .catch((error) => {
-    console.log("fileName - index.js connectDb catch statement ", error);
+    console.log("index.ts connectDb catch statement", error);
   });

@@ -1,6 +1,13 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import axios from "axios";
-import { githubApi } from "../api/axios.js";
+
+interface GitHubEvent {
+  repo: { name: string; url: string };
+}
+
+interface GitHubCommit {
+  commit: { message: string; committer: { date: string } };
+}
 
 export const getCommit = asyncHandler(async (req, res) => {
   const commit = {
@@ -9,14 +16,16 @@ export const getCommit = asyncHandler(async (req, res) => {
     date: "",
   };
 
-  const response_eventapi = await axios.get(
+  const response_eventapi = await axios.get<GitHubEvent[]>(
     "https://api.github.com/users/aalampatil/events/public",
   );
 
   const data = response_eventapi.data[0];
+  if (!data) throw new Error("No public GitHub activity available");
   const repoUrl = data.repo.url;
-  const response_commitApi = await axios.get(`${repoUrl}/commits?per_page=1`);
+  const response_commitApi = await axios.get<GitHubCommit[]>(`${repoUrl}/commits?per_page=1`);
   const commit_data = response_commitApi.data;
+  if (!commit_data[0]) throw new Error("No commits available for this repository");
   
 
   commit.repoName = data.repo.name;
