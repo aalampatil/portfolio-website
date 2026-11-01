@@ -12,6 +12,7 @@ import { ProfileSection } from "./components/sections/ProfileSection";
 import { StackSection } from "./components/sections/StackSection";
 import { GitHubSection } from "./components/sections/GitHubSection";
 import { JapaneseText } from "./components/JapaneseText";
+import { VisitorCount } from "./components/VisitorCount";
 import { changelog, featuredTweets, navItems, stack } from "./data/portfolio";
 import { BLOGS_QUERY, HASHNODE_API_URL, POSTS_PER_PAGE } from "./lib/hashnode";
 import type { BlogPost, BlogStatus, HashnodeResponse, InkMode } from "./types";
@@ -124,7 +125,7 @@ export default function Home() {
 
       </div>
       <RightRail />
-      <footer className="site-footer"><a href="#overview" className="brand"><JapaneseText className="seal" text="作" />AALAM PATIL</a><p>Code. Learn. Write. Repeat.</p><a href="#overview">Back to the top ↑</a></footer>
+      <footer className="site-footer"><a href="#overview" className="brand"><JapaneseText className="seal" text="作" />AALAM PATIL</a><p>Code. Learn. Write. Repeat.</p><VisitorCount /><a href="#overview">Back to the top ↑</a></footer>
     </main>
   );
 }

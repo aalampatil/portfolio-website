@@ -21,6 +21,10 @@ Next.js generates `next-env.d.ts` for the active build directory. It is ignored 
 
 ## Structure
 
+If local Atlas lookups fail with `querySrv ECONNREFUSED`, optionally set `MONGODB_DNS_SERVERS=1.1.1.1,8.8.8.8` in `.env.local`. This selects resolvers within the app process; it does not change system DNS. Leave it unset on hosts whose normal resolver already works.
+
+The footer visitor counter stores anonymous browser IDs in MongoDB and counts each ID once, so refreshes and duplicate React effects do not inflate it. Set `MONGODB_URI` and optionally `MONGODB_DATABASE` in `.env.local` for development and in the hosting environment for production. The default database is `portfolio-ap`, using the `portfolio_visitors` collection. No IP address or browser fingerprint is stored. A database outage displays an unavailable mark instead of an invented count.
+
 Project titles and “Visit project” links open the URL configured in `app/data/portfolio.ts`, falling back to GitHub’s Website field for new pinned projects. Repository links are kept separately as “View source.” Projects without a known live URL display “Live site not listed” instead of linking their title to GitHub.
 
 The hero includes a CSS 3D code cube, pointer-driven landscape depth, and a pause control. Section headings reveal gently as they enter the viewport in supporting browsers. Reduced-motion preferences stop these effects; touch input does not tilt the artwork.

@@ -4,12 +4,18 @@ import type { GitHubData } from "../app/types";
 import { getProjectWebsite } from "../app/lib/project-links";
 
 let currentData: GitHubData;
+let visitors: Set<string>;
 
 test.beforeEach(async ({ page }) => {
   currentData = { ...snapshot, repositorySource: "github", contributionSource: "github" };
+  visitors = new Set();
   await page.clock.install();
   await page.route("https://fonts.googleapis.com/**", route => route.abort());
   await page.route("**/api/github", route => route.fulfill({ json: currentData }));
+  await page.route("**/api/visitors", route => {
+    if (route.request().method() === "POST") visitors.add(route.request().postDataJSON().visitorId);
+    return route.fulfill({ json: { count: 100 + visitors.size } });
+  });
   const hydrated = page.waitForResponse(response => response.url().endsWith("/api/github"));
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await hydrated;
@@ -25,6 +31,22 @@ test("Ink has only light and dark modes and remembers the selection", async ({ p
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(page.locator("html")).toHaveAttribute("data-mode", "light");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("software.");
+});
+
+test("visitor count is displayed without counting refreshes as new visitors", async ({ page }) => {
+  await expect(page.getByRole("status", { name: "Visitor count" })).toHaveText("101visitors");
+  expect(visitors.size).toBe(1);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.getByRole("status", { name: "Visitor count" })).toHaveText("101visitors");
+  expect(visitors.size).toBe(1);
+});
+
+test("visitor count shows an unavailable state during a database outage", async ({ page }) => {
+  await page.route("**/api/visitors", route => route.fulfill({ status: 503, json: { error: "Unavailable" } }));
+  await page.reload({ waitUntil: "domcontentloaded" });
+  const counter = page.getByRole("status", { name: "Visitor count" });
+  await expect(counter).toHaveText("—visitors");
+  await expect(counter).toHaveAttribute("title", "Visitor count temporarily unavailable");
 });
 
 test("only pinned repositories appear, and a changed pin list updates after an hour", async ({ page }) => {
