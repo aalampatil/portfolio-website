@@ -19,6 +19,8 @@ Development output lives in `.next-dev`; production build and start use `.next`.
 
 ## Structure
 
+The hero includes a CSS 3D code cube, pointer-driven landscape depth, and a pause control. Section headings reveal gently as they enter the viewport in supporting browsers. Reduced-motion preferences stop these effects; touch input does not tilt the artwork.
+
 - `app/components` contains shared UI and layout components.
 - `app/components/sections` contains one component per portfolio section.
 - `app/data/portfolio.ts` contains portfolio content.

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { JapaneseText } from "../JapaneseText";
 import type { InkMode } from "../../types";
+import { ArtworkMotion } from "../ArtworkMotion";
 
 export function OverviewSection({ mode }: { mode: InkMode }) {
   return (
@@ -13,13 +14,13 @@ export function OverviewSection({ mode }: { mode: InkMode }) {
         <div className="hero-actions"><a href="#projects" className="neo-button">View selected work <ArrowUpRight size={18} /></a><a href="#blogs" className="text-link">Read my notes <ArrowDown size={16} /></a></div>
         <div className="hero-footnote"><span>BASED IN HARYANA, INDIA</span><span>BUILD / LEARN / REPEAT</span></div>
       </div>
-      <div className="hero-art">
+      <ArtworkMotion>
         <Image src={mode === "light" ? "/images/ink-landscape-light.svg" : "/images/ink-landscape.svg"} alt="A crimson sun over layered mountains and a silhouetted pine tree" fill priority sizes="(max-width: 760px) 100vw, 50vw" className="samurai-image" />
         <div className="art-lettering"><JapaneseText text="日々精進" /><span aria-hidden="true">MAKE<br />EVERY<br />DETAIL<br />COUNT.</span></div>
         <JapaneseText className="art-vertical" text="創造と探求" />
         <span className="art-caption"><JapaneseText text="小さな一歩" /> / ONE STEP AT A TIME</span>
         <JapaneseText className="art-stamp" text="探求">探<br />求</JapaneseText>
-      </div>
+      </ArtworkMotion>
     </section>
   );
 }

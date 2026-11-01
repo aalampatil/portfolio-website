@@ -69,3 +69,23 @@ test("the layout stays within mobile screens and the calendar supports keyboard 
   await page.keyboard.press("Home");
   await expect(page.locator("button.contribution-cell").first()).toHaveAttribute("aria-pressed", "true");
 });
+
+test("artwork responds to the pointer, pauses, and respects reduced motion", async ({ page }, testInfo) => {
+  const artwork = page.locator(".artwork-motion");
+  const bounds = await artwork.boundingBox();
+  expect(bounds).not.toBeNull();
+  await page.mouse.move(bounds!.x + bounds!.width * .8, bounds!.y + bounds!.height * .3);
+  await expect.poll(() => artwork.evaluate(element => element.style.getPropertyValue("--art-x"))).not.toBe("");
+  await page.getByRole("button", { name: "Pause animation" }).click();
+  await expect(artwork).toHaveAttribute("data-motion", "paused");
+  await expect(page.locator(".code-cube")).toHaveCSS("animation-play-state", "paused");
+  await page.getByRole("button", { name: "Resume animation" }).click();
+  await expect(artwork).toHaveAttribute("data-motion", "active");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(artwork).toHaveAttribute("data-motion", "paused");
+  await expect(page.locator(".code-cube")).toHaveCSS("animation-name", "none");
+  await expect(page.locator(".artwork-motion .samurai-image")).toHaveCSS("transform", "none");
+  await page.screenshot({ path: testInfo.outputPath("ink-dark.png"), fullPage: true });
+  await page.getByRole("switch", { name: "Dark mode" }).click();
+  await page.screenshot({ path: testInfo.outputPath("ink-light.png"), fullPage: true });
+});

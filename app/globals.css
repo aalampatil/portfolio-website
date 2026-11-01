@@ -368,6 +368,39 @@ code, pre, .eyebrow { font-family: "IBM Plex Mono", monospace; }
 .translation-tooltip { position: fixed; z-index: 100; display: flex; flex-direction: column; gap: 7px; width: max-content; max-width: min(260px, calc(100vw - 16px)); padding: 13px 16px; border: 1px solid var(--border); border-top: 2px solid var(--main); background: var(--secondary-background); color: var(--foreground); box-shadow: 0 8px 28px #00000035; font: 12px/1.5 "DM Sans", sans-serif; font-weight: 400; letter-spacing: 0; text-align: left; writing-mode: horizontal-tb; white-space: normal; cursor: default; }
 .translation-original { color: var(--main); font: 15px/1.4 "Noto Serif JP", serif; letter-spacing: .1em; }
 
+/* A small code sculpture and pointer-controlled depth keep Ink's quiet rhythm. */
+.artwork-motion { --art-x: 0; --art-y: 0; }
+:root[data-theme="ink"] .artwork-motion .samurai-image { transform: perspective(1100px) rotateX(calc(var(--art-y) * -3deg)) rotateY(calc(var(--art-x) * 4deg)) scale(1.055); transition: transform .6s cubic-bezier(.2,.7,.3,1); }
+.code-object { --cube-size: 52px; --cube-depth: 26px; position: absolute; top: 64px; right: 114px; width: var(--cube-size); height: var(--cube-size); perspective: 500px; pointer-events: none; animation: code-float 6s ease-in-out infinite; }
+.code-cube { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: code-turn 22s linear infinite; }
+.code-cube > span { position: absolute; inset: 0; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--main) 65%, transparent); background: color-mix(in srgb, var(--secondary-background) 90%, transparent); color: var(--main); font: 15px "IBM Plex Mono", monospace; backface-visibility: hidden; box-shadow: inset 0 0 16px color-mix(in srgb, var(--main) 7%, transparent); }
+.cube-front { transform: translateZ(var(--cube-depth)); }
+.cube-back { transform: rotateY(180deg) translateZ(var(--cube-depth)); }
+.cube-right { transform: rotateY(90deg) translateZ(var(--cube-depth)); }
+.cube-left { transform: rotateY(-90deg) translateZ(var(--cube-depth)); }
+.cube-top { transform: rotateX(90deg) translateZ(var(--cube-depth)); }
+.cube-bottom { transform: rotateX(-90deg) translateZ(var(--cube-depth)); }
+.motion-toggle { position: absolute; bottom: 26px; right: 82px; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 1px solid var(--border); background: var(--secondary-background); color: var(--foreground); cursor: pointer; }
+.motion-toggle:hover { border-color: var(--main); color: var(--main); }
+.artwork-motion[data-motion="paused"] .code-object,
+.artwork-motion[data-motion="paused"] .code-cube { animation-play-state: paused; }
+@keyframes code-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes code-turn { from { transform: rotateX(-20deg) rotateY(-30deg); } to { transform: rotateX(340deg) rotateY(330deg); } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .portfolio-section > .section-heading { animation: section-arrive linear both; animation-timeline: view(); animation-range: entry 0% entry 80%; }
+    @keyframes section-arrive { from { opacity: .25; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  }
+}
+@media (max-width: 760px) {
+  .code-object { --cube-size: 40px; --cube-depth: 20px; top: 46px; right: 85px; }
+  .code-cube > span { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="ink"] .artwork-motion .samurai-image { transform: none; }
+  .code-cube { transform: rotateX(-20deg) rotateY(-30deg); }
+}
+
 /* GitHub activity: square marks, restrained rules, and the active theme's ink. */
 .github-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
 .github-heading .eyebrow { margin-bottom: 8px; }
