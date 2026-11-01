@@ -1,11 +1,22 @@
 import { ArrowUpRight, Loader2 } from "lucide-react";
 import { SectionShell } from "../SectionShell";
+import type { BlogPost, BlogStatus } from "../../types";
 
-export function BlogsSection({ posts, blogStatus, blogError, hasNextPage, isLoadingMore, onFetchBlogs, onLoadMore }) {
+interface BlogsSectionProps {
+  posts: BlogPost[];
+  blogStatus: BlogStatus;
+  blogError: string;
+  hasNextPage: boolean;
+  isLoadingMore: boolean;
+  onFetchBlogs: () => void;
+  onLoadMore: () => void;
+}
+
+export function BlogsSection({ posts, blogStatus, blogError, hasNextPage, isLoadingMore, onFetchBlogs, onLoadMore }: BlogsSectionProps) {
   return (
-    <SectionShell id="blogs" title="Writing & learning" description="Technical notes on authentication, development, and lessons from building projects.">
+    <SectionShell id="blogs" title="Notes from the process." description="What I learn while building: authentication concepts, development decisions, and the details that finally click.">
       <div className="writing-intro">
-        <div><span className="eyebrow">MY TECHNICAL JOURNAL</span><h3>Learning, written down.</h3><p>Read my published notes on Hashnode, or browse the latest entries here.</p></div>
+        <div><span className="eyebrow">THE DEVELOPER’S NOTEBOOK</span><h3>Build it. Understand it. Write it down.</h3><p>I document the concepts I explore so the next project starts a little further ahead. Read on Hashnode or load the latest articles below.</p></div>
         <a className="neo-button-secondary" href="https://aalampatilblogs.hashnode.dev" target="_blank" rel="noreferrer">Visit publication <ArrowUpRight size={16} /></a>
       </div>
       <div className="writing-status" aria-live="polite">

@@ -1,6 +1,7 @@
 import { Terminal } from "lucide-react";
+import type { ReactNode } from "react";
 
-export function CodePanel({ title, children }) {
+export function CodePanel({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="neo-card overflow-hidden">
       <div className="flex items-center justify-between border-b-2 border-[var(--border)] bg-[var(--chart-5)] px-4 py-3">

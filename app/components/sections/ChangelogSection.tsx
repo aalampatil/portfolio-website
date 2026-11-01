@@ -1,4 +1,6 @@
-export function ChangelogSection({ changelog }) {
+import type { ChangelogEntry } from "../../types";
+
+export function ChangelogSection({ changelog }: { changelog: ChangelogEntry[] }) {
   return (
     <details className="portfolio-disclosure" id="changelog">
       <summary><span><span className="eyebrow">BEHIND THE SITE</span><strong>Portfolio history</strong></span><span className="disclosure-plus" aria-hidden="true">+</span></summary>

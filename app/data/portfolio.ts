@@ -1,14 +1,17 @@
-export const navItems = [
-  { id: "projects", label: "Work" },
-  { id: "stack", label: "Toolkit" },
-  { id: "blogs", label: "Writing" },
-  { id: "profile", label: "About" },
-  { id: "contact", label: "Connect" },
+import type { NavItem, Project, ChangelogEntry, BuildUpdate } from "../types";
+
+export const navItems: NavItem[] = [
+  { id: "projects", label: "Work", number: "01" },
+  { id: "github", label: "GitHub", number: "01B" },
+  { id: "stack", label: "Toolkit", number: "02" },
+  { id: "blogs", label: "Writing", number: "03" },
+  { id: "profile", label: "About", number: "04" },
+  { id: "contact", label: "Connect", number: "05" },
 ];
 
 export const profile = {
   name: "Aalam Patil",
-  role: "Backend-focused developer",
+  role: "Software developer",
   location: "Haryana, India",
   status: "Building projects and writing technical notes",
   focus: ["APIs", "Authentication", "Node.js", "System design basics"],
@@ -31,17 +34,7 @@ export const stack = [
   "Git",
 ];
 
-export const projects = [
-  {
-    name: "wordle-ap",
-    status: "Live",
-    method: "GET",
-    endpoint: "/projects/wordle-ap",
-    url: "https://wordle-ap.netlify.app/",
-    description:
-      "Wordle-inspired app built while learning JWT authentication, refresh tokens, session handling, cookies, and Google OAuth.",
-    tags: ["React", "Auth", "OAuth"],
-  },
+export const projects: Project[] = [
   {
     name: "oidc-ap",
     status: "Live",
@@ -49,7 +42,7 @@ export const projects = [
     endpoint: "/projects/oidc-ap",
     url: "https://oidc-ap.aalampatil.online/",
     description:
-      "OpenID Connect authentication project focused on identity flows, provider integration, sessions, and secure login behavior.",
+      "An OpenID Connect project exploring how an application signs users in through an identity provider, maintains a session, and handles the steps of an authentication flow.",
     tags: ["OIDC", "Auth", "Sessions"],
   },
   {
@@ -59,7 +52,7 @@ export const projects = [
     endpoint: "/projects/deadlink",
     url: "http://deadlink.sbs/",
     description:
-      "A live web project for checking, exploring, or presenting link behavior through a focused utility interface.",
+      "A link-focused web utility. Part of my collection of small, deployed projects for exploring how a focused tool takes shape on the web.",
     tags: ["Web Tool", "Links", "Utility"],
   },
   {
@@ -69,7 +62,7 @@ export const projects = [
     endpoint: "/projects/talaash-ap",
     url: "http://talaash-ap.space/",
     description:
-      "Search-oriented project with a deployed web experience built around discovery and fast access to relevant results.",
+      "A search-oriented web project exploring how to turn a query into a useful discovery experience, from the search interface to the results.",
     tags: ["Search", "Frontend", "Product"],
   },
   {
@@ -79,7 +72,7 @@ export const projects = [
     endpoint: "/projects/chaicss-ap",
     url: "https://chaicss-ap.aalampatil.online/",
     description:
-      "CSS-focused project for experimenting with reusable styles, interface patterns, and polished frontend presentation.",
+      "A CSS experiment in reusable styles and interface patterns. A place to work through how small styling decisions shape a complete page.",
     tags: ["CSS", "UI", "Frontend"],
   },
 ];
@@ -99,7 +92,7 @@ export const previews = [
   },
 ];
 
-export const featuredTweets = [
+export const featuredTweets: BuildUpdate[] = [
   {
     title: "Latest Build Update",
     url: "https://x.com/aalam_twt/status/2050286970375672018?s=20",
@@ -114,7 +107,12 @@ export const featuredTweets = [
   },
 ];
 
-export const changelog = [
+export const changelog: ChangelogEntry[] = [
+  {
+    version: "v3.1.0",
+    title: "Ink, contrast, and clearer stories",
+    detail: "A charcoal and crimson theme inspired by Japanese Android home screens, an original landscape illustration, and more focused project and profile copy.",
+  },
   {
     version: "v3.0.0",
     title: "The way of the craft",

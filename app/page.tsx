@@ -9,38 +9,41 @@ import { ChangelogSection } from "./components/sections/ChangelogSection";
 import { LivePreviewSection } from "./components/sections/LivePreviewSection";
 import { OverviewSection } from "./components/sections/OverviewSection";
 import { ProfileSection } from "./components/sections/ProfileSection";
-import { ProjectsSection } from "./components/sections/ProjectsSection";
 import { StackSection } from "./components/sections/StackSection";
-import { changelog, featuredTweets, navItems, projects, stack } from "./data/portfolio";
+import { GitHubSection } from "./components/sections/GitHubSection";
+import { JapaneseText } from "./components/JapaneseText";
+import { changelog, featuredTweets, navItems, stack } from "./data/portfolio";
 import { BLOGS_QUERY, HASHNODE_API_URL, POSTS_PER_PAGE } from "./lib/hashnode";
+import type { BlogPost, BlogStatus, HashnodeResponse, InkMode } from "./types";
 
 export default function Home() {
-  const [theme, setTheme] = useState("sakura");
+  const [mode, setMode] = useState<InkMode>("dark");
 
   useEffect(() => {
-    let savedTheme = "sakura";
+    let savedMode: InkMode = "dark";
     try {
-      const saved = localStorage.getItem("portfolio-theme");
-      if (["samurai", "sakura", "moonlight"].includes(saved)) savedTheme = saved;
+      const saved = localStorage.getItem("portfolio-ink-mode");
+      if (saved === "light" || saved === "dark") savedMode = saved;
     } catch { /* Theme switching also works when storage is unavailable. */ }
-    setTheme(savedTheme);
-    document.documentElement.dataset.theme = savedTheme;
+    setMode(savedMode);
+    document.documentElement.dataset.mode = savedMode;
   }, []);
 
-  function changeTheme(nextTheme) {
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    try { localStorage.setItem("portfolio-theme", nextTheme); } catch { /* Keep the selection for this visit. */ }
+  function changeMode() {
+    const nextMode = mode === "dark" ? "light" : "dark";
+    setMode(nextMode);
+    document.documentElement.dataset.mode = nextMode;
+    try { localStorage.setItem("portfolio-ink-mode", nextMode); } catch { /* Keep the selection for this visit. */ }
   }
 
-  const [posts, setPosts] = useState([]);
-  const [blogStatus, setBlogStatus] = useState("idle");
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [blogStatus, setBlogStatus] = useState<BlogStatus>("idle");
   const [blogError, setBlogError] = useState("");
-  const [endCursor, setEndCursor] = useState(null);
+  const [endCursor, setEndCursor] = useState<string | null>(null);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  async function fetchBlogs({ after = null, append = false } = {}) {
+  async function fetchBlogs({ after = null, append = false }: { after?: string | null; append?: boolean } = {}) {
     try {
       if (append) {
         setIsLoadingMore(true);
@@ -68,7 +71,7 @@ export default function Home() {
         throw new Error("Unable to load blogs right now.");
       }
 
-      const data = await response.json();
+      const data: HashnodeResponse = await response.json();
 
       if (data.errors?.length) {
         throw new Error(data.errors[0].message);
@@ -76,7 +79,7 @@ export default function Home() {
 
       const connection = data.data?.publication?.posts;
       const nextPosts =
-        connection?.edges?.map((edge) => edge.node).filter(Boolean) ?? [];
+        connection?.edges?.map((edge) => edge.node).filter((post): post is BlogPost => post !== null) ?? [];
 
       setPosts((currentPosts) => {
         const mergedPosts = append ? [...currentPosts, ...nextPosts] : nextPosts;
@@ -86,7 +89,7 @@ export default function Home() {
       setHasNextPage(Boolean(connection?.pageInfo?.hasNextPage));
       setBlogStatus("success");
     } catch (error) {
-      setBlogError(error.message || "Unable to load blogs right now.");
+      setBlogError(error instanceof Error ? error.message : "Unable to load blogs right now.");
       setBlogStatus("error");
     } finally {
       setIsLoadingMore(false);
@@ -96,12 +99,12 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <a href="#projects" className="skip-link">Skip to selected work</a>
-      <SiteHeader theme={theme} onThemeChange={changeTheme} />
-      <OverviewSection theme={theme} />
+      <SiteHeader mode={mode} onModeChange={changeMode} />
+      <OverviewSection mode={mode} />
       <SideNav items={navItems} />
       <div className="portfolio-layout">
         <div className="portfolio-content">
-          <ProjectsSection projects={projects} />
+          <GitHubSection />
           <StackSection stack={stack} />
           <BlogsSection
             posts={posts}
@@ -121,7 +124,7 @@ export default function Home() {
 
       </div>
       <RightRail />
-      <footer className="site-footer"><a href="#overview" className="brand"><span className="seal" aria-hidden="true">{theme === "samurai" ? "侍" : "桜"}</span>AALAM PATIL</a><p>Built with intention. Refined with practice.</p><a href="#overview">Back to the top ↑</a></footer>
+      <footer className="site-footer"><a href="#overview" className="brand"><JapaneseText className="seal" text="作" />AALAM PATIL</a><p>Code. Learn. Write. Repeat.</p><a href="#overview">Back to the top ↑</a></footer>
     </main>
   );
 }

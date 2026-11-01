@@ -1,12 +1,13 @@
 import { ArrowUpRight } from "lucide-react";
 import { SectionShell } from "../SectionShell";
+import type { Project } from "../../types";
 
-export function ProjectsSection({ projects }) {
+export function ProjectsSection({ projects }: { projects: Project[] }) {
   const featured = projects.slice(0, 2);
   const otherProjects = projects.slice(2);
 
   return (
-    <SectionShell id="projects" title="Selected projects" description="A closer look at what I’m building, from authentication flows to everyday web tools.">
+    <SectionShell id="projects" title="Ideas, put into practice." description="Web apps and experiments where I work through identity, interfaces, and the connections between them.">
       <div className="featured-projects">
         {featured.map((project, index) => (
           <article className="featured-project" key={project.name}>

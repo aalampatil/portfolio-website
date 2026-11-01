@@ -7,9 +7,9 @@ const groups = [
   { title: "Workflow", description: "Version control", items: ["Git"] },
 ];
 
-export function StackSection({ stack }) {
+export function StackSection({ stack }: { stack: string[] }) {
   return (
-    <SectionShell id="stack" title="Tools I work with" description="My focus is on the backend, with web and mobile tools to bring projects together.">
+    <SectionShell id="stack" title="Tools I work with" description="The tools I use to build interfaces, APIs, authentication flows, and data layers.">
       <div className="toolkit-grid">
         {groups.map((group, index) => (
           <div className="toolkit-group" key={group.title}>

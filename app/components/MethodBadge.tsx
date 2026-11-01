@@ -1,5 +1,5 @@
-export function MethodBadge({ method }) {
-  const colors = {
+export function MethodBadge({ method }: { method: string }) {
+  const colors: Record<string, string> = {
     GET: "bg-[var(--chart-2)]",
     POST: "bg-[var(--chart-5)]",
     PATCH: "bg-[var(--chart-3)]",

@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
+import type { BuildUpdate } from "../../types";
 
-export function LivePreviewSection({ tweets }) {
+export function LivePreviewSection({ tweets }: { tweets: BuildUpdate[] }) {
   return (
     <details className="portfolio-disclosure" id="live-preview">
       <summary><span><span className="eyebrow">FROM THE WORKSHOP</span><strong>Build updates</strong></span><span className="disclosure-plus" aria-hidden="true">+</span></summary>

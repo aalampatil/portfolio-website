@@ -2,6 +2,9 @@ node_modules
 .env
 .next
 .next-dev
+*.tsbuildinfo
+playwright-report
+test-results
 out
 
 # Logs
