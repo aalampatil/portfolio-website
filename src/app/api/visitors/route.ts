@@ -1,4 +1,5 @@
 import { getVisitorCount, isVisitorId, registerVisitor } from "@/lib/visitors";
+import { getVisitAttribution } from "@/lib/analytics";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,7 +22,8 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid visitor ID" }, { status: 400, headers });
   }
   try {
-    return Response.json({ count: await registerVisitor(body.visitorId) }, { headers });
+    const attribution = getVisitAttribution(body as Record<string, unknown>, request.headers);
+    return Response.json({ count: await registerVisitor(body.visitorId, attribution) }, { headers });
   } catch {
     return Response.json({ error: "Visitor count temporarily unavailable" }, { status: 503, headers });
   }

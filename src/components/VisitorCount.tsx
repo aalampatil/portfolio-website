@@ -19,7 +19,11 @@ export function VisitorCount() {
     fetch("/api/visitors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ visitorId: id }),
+      body: JSON.stringify({
+        visitorId: id,
+        referrer: document.referrer,
+        utmSource: new URLSearchParams(window.location.search).get("utm_source"),
+      }),
       cache: "no-store",
     }).then(async response => {
       if (!response.ok) throw new Error("Visitor counter unavailable");
