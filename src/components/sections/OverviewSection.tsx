@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Download } from "lucide-react";
 import { JapaneseText } from "@/components/JapaneseText";
 import { ArtworkMotion } from "@/components/ArtworkMotion";
 import { InkLandscape } from "@/components/InkLandscape";
@@ -10,7 +10,7 @@ export function OverviewSection() {
         <p className="eyebrow"><span /> AALAM PATIL / SOFTWARE DEVELOPER</p>
         <h1>I turn ideas<br />into working<br /><em>software.</em></h1>
         <p className="hero-description">I build web apps, explore new tools, and turn what I learn into useful projects. My work spans interfaces, APIs, authentication, and the systems that bring them together.</p>
-        <div className="hero-actions"><a href="#projects" className="neo-button">View selected work <ArrowUpRight size={18} /></a><a href="#blogs" className="text-link">Read my notes <ArrowDown size={16} /></a></div>
+        <div className="hero-actions"><a href="#projects" className="neo-button">View selected work <ArrowUpRight size={18} /></a><a href="/resume.pdf" download="Aalam-Patil-Resume.pdf" className="neo-button-secondary">Download resume <Download size={18} aria-hidden="true" /></a><a href="#blogs" className="text-link">Read my notes <ArrowDown size={16} /></a></div>
         <div className="hero-footnote"><span>BASED IN HARYANA, INDIA</span><span>BUILD / LEARN / REPEAT</span></div>
       </div>
       <ArtworkMotion>
