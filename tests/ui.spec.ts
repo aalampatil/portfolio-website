@@ -49,12 +49,12 @@ test("visitor count shows an unavailable state during a database outage", async 
   await expect(counter).toHaveAttribute("title", "Visitor count temporarily unavailable");
 });
 
-test("only pinned repositories appear, and a changed pin list updates after an hour", async ({ page }) => {
+test("only pinned repositories appear, and a changed pin list updates after five minutes", async ({ page }) => {
   await expect(page.locator(".github-repo")).toHaveCount(snapshot.repositories.length);
   await expect(page.locator(".featured-project, .small-project, .github-expand")).toHaveCount(0);
   const first = snapshot.repositories[0];
   currentData = { ...currentData, repositories: [{ ...first, name: "newly-pinned-project" }] };
-  await page.clock.fastForward(60 * 60 * 1000);
+  await page.clock.fastForward(5 * 60 * 1000);
   await expect(page.locator(".github-repo")).toHaveCount(1);
   await expect(page.locator(".github-repo h3")).toHaveText("newly-pinned-project");
 });

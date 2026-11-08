@@ -1,97 +1,62 @@
 {
-  "fetchedAt": "2026-11-01T17:25:29.118Z",
+  "fetchedAt": "2026-11-08T10:37:49.384Z",
   "repositories": [
     {
-      "name": "llop-ap",
-      "url": "https://github.com/aalampatil/llop-ap",
-      "homepage": null,
+      "name": "poll",
+      "url": "https://github.com/aalampatil/poll",
+      "homepage": "https://poll.aalampatil.in",
       "description": null,
       "language": "TypeScript",
       "stars": 0,
-      "updatedAt": "2026-10-31T19:00:57Z"
+      "updatedAt": "2026-11-08T09:16:51Z"
     },
     {
-      "name": "portfolio-website",
-      "url": "https://github.com/aalampatil/portfolio-website",
-      "homepage": "https://portfolio-website-eta-snowy-65.vercel.app",
-      "description": null,
-      "language": "CSS",
-      "stars": 0,
-      "updatedAt": "2026-11-01T07:58:18Z"
-    },
-    {
-      "name": "oidc-ap",
-      "url": "https://github.com/aalampatil/oidc-ap",
-      "homepage": "https://oidc-xi.vercel.app",
+      "name": "oidc",
+      "url": "https://github.com/aalampatil/oidc",
+      "homepage": "https://oidc.aalampatil.in",
       "description": null,
       "language": "TypeScript",
       "stars": 0,
       "updatedAt": "2026-11-01T09:12:13Z"
     },
     {
-      "name": "deadlink-ap",
-      "url": "https://github.com/aalampatil/deadlink-ap",
+      "name": "link",
+      "url": "https://github.com/aalampatil/link",
+      "homepage": "https://link.aalampatil.in",
+      "description": null,
+      "language": "TypeScript",
+      "stars": 0,
+      "updatedAt": "2026-11-08T08:08:32Z"
+    },
+    {
+      "name": "sumi-kami",
+      "url": "https://github.com/aalampatil/sumi-kami",
       "homepage": null,
       "description": null,
       "language": "TypeScript",
       "stars": 0,
-      "updatedAt": "2026-10-31T17:15:09Z"
+      "updatedAt": "2026-11-07T10:17:41Z"
     },
     {
-      "name": "talaash-ap",
-      "url": "https://github.com/aalampatil/talaash-ap",
+      "name": "test-lab",
+      "url": "https://github.com/aalampatil/test-lab",
       "homepage": null,
       "description": null,
       "language": "TypeScript",
       "stars": 0,
-      "updatedAt": "2026-11-01T13:37:00Z"
+      "updatedAt": "2026-11-07T07:20:22Z"
     },
     {
-      "name": "chaiCSS-ap",
-      "url": "https://github.com/aalampatil/chaiCSS-ap",
-      "homepage": "https://chai-css-ap.vercel.app",
+      "name": "portfolio-website",
+      "url": "https://github.com/aalampatil/portfolio-website",
+      "homepage": "https://portfolio-website-eta-snowy-65.vercel.app",
       "description": null,
-      "language": "HTML",
+      "language": "TypeScript",
       "stars": 0,
-      "updatedAt": "2026-03-24T13:44:33Z"
+      "updatedAt": "2026-11-08T10:26:57Z"
     }
   ],
   "contributions": [
-    {
-      "date": "2025-11-02",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2025-11-03",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2025-11-04",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2025-11-05",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2025-11-06",
-      "count": 1,
-      "level": 1
-    },
-    {
-      "date": "2025-11-07",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2025-11-08",
-      "count": 0,
-      "level": 0
-    },
     {
       "date": "2025-11-09",
       "count": 0,
@@ -500,7 +465,7 @@
     {
       "date": "2026-01-29",
       "count": 8,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-01-30",
@@ -690,7 +655,7 @@
     {
       "date": "2026-03-08",
       "count": 17,
-      "level": 3
+      "level": 2
     },
     {
       "date": "2026-03-09",
@@ -780,7 +745,7 @@
     {
       "date": "2026-03-26",
       "count": 14,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-03-27",
@@ -790,7 +755,7 @@
     {
       "date": "2026-03-28",
       "count": 13,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-03-29",
@@ -865,7 +830,7 @@
     {
       "date": "2026-04-12",
       "count": 10,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-04-13",
@@ -905,7 +870,7 @@
     {
       "date": "2026-04-20",
       "count": 11,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-04-21",
@@ -915,7 +880,7 @@
     {
       "date": "2026-04-22",
       "count": 10,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-04-23",
@@ -935,7 +900,7 @@
     {
       "date": "2026-04-26",
       "count": 13,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-04-27",
@@ -960,7 +925,7 @@
     {
       "date": "2026-05-01",
       "count": 12,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-05-02",
@@ -970,12 +935,12 @@
     {
       "date": "2026-05-03",
       "count": 15,
-      "level": 3
+      "level": 1
     },
     {
       "date": "2026-05-04",
       "count": 23,
-      "level": 4
+      "level": 2
     },
     {
       "date": "2026-05-05",
@@ -1010,12 +975,12 @@
     {
       "date": "2026-05-11",
       "count": 18,
-      "level": 3
+      "level": 2
     },
     {
       "date": "2026-05-12",
       "count": 9,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-05-13",
@@ -1600,7 +1565,7 @@
     {
       "date": "2026-09-06",
       "count": 9,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-09-07",
@@ -1865,22 +1830,57 @@
     {
       "date": "2026-10-29",
       "count": 10,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-10-30",
       "count": 20,
-      "level": 3
-    },
-    {
-      "date": "2026-10-31",
-      "count": 10,
       "level": 2
     },
     {
+      "date": "2026-10-31",
+      "count": 13,
+      "level": 1
+    },
+    {
       "date": "2026-11-01",
-      "count": 28,
+      "count": 35,
+      "level": 3
+    },
+    {
+      "date": "2026-11-02",
+      "count": 6,
+      "level": 1
+    },
+    {
+      "date": "2026-11-03",
+      "count": 1,
+      "level": 1
+    },
+    {
+      "date": "2026-11-04",
+      "count": 0,
+      "level": 0
+    },
+    {
+      "date": "2026-11-05",
+      "count": 1,
+      "level": 1
+    },
+    {
+      "date": "2026-11-06",
+      "count": 60,
       "level": 4
+    },
+    {
+      "date": "2026-11-07",
+      "count": 18,
+      "level": 2
+    },
+    {
+      "date": "2026-11-08",
+      "count": 7,
+      "level": 1
     }
   ]
 }

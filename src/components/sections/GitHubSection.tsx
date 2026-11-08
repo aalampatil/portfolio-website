@@ -17,21 +17,36 @@ const formatDate = (date: string) => shortDate.format(new Date(`${date.slice(0, 
 export function GitHubSection() {
   const [data, setData] = useState<GitHubData>(snapshot);
   const [source, setSource] = useState<GitHubSource>("snapshot");
+  const [repositorySource, setRepositorySource] = useState<GitHubSource>("snapshot");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    const refresh = () => fetch("/api/github", { signal: controller.signal, cache: "no-cache" })
+    let refreshing = false;
+    const refresh = async () => {
+      if (refreshing || document.visibilityState === "hidden") return;
+      refreshing = true;
+      await fetch("/api/github", { signal: controller.signal, cache: "no-store" })
       .then(response => { if (!response.ok) throw new Error("GitHub unavailable"); return response.json(); })
       .then((next: GitHubData) => {
         if (!Array.isArray(next.repositories) || !next.contributions?.length) return;
         setData(next);
         setSource(next.contributionSource || "snapshot");
+        setRepositorySource(next.repositorySource || "snapshot");
       })
-      .catch(() => { /* Keep the verified snapshot visible when GitHub is unavailable. */ });
+      .catch(() => { /* Keep the last displayed data when the request fails. */ })
+      .finally(() => { refreshing = false; });
+    };
     refresh();
-    const interval = setInterval(refresh, 60 * 60 * 1000);
-    return () => { controller.abort(); clearInterval(interval); };
+    const interval = setInterval(refresh, 5 * 60 * 1000);
+    document.addEventListener("visibilitychange", refresh);
+    window.addEventListener("online", refresh);
+    return () => {
+      controller.abort();
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", refresh);
+      window.removeEventListener("online", refresh);
+    };
   }, []);
 
   const { repositories, contributions: days } = data;
@@ -60,7 +75,7 @@ export function GitHubSection() {
   }
 
   return (
-    <SectionShell id="projects" title="Selected work, straight from GitHub." description="The projects I’ve pinned on my GitHub profile. This selection refreshes every hour.">
+    <SectionShell id="projects" title="Selected work, straight from GitHub." description="The projects I’ve pinned on my GitHub profile. This selection refreshes every five minutes.">
       <div className="github-heading"><div><p className="eyebrow"><JapaneseText text="固定" /> / PINNED REPOSITORIES</p><h3>From the workshop</h3></div><a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">View GitHub profile <ArrowUpRight size={16} /></a></div>
       <div className="github-repositories" id="github-repositories">
         {repositories.map(repo => {
@@ -78,6 +93,7 @@ export function GitHubSection() {
           );
         })}
       </div>
+      {repositorySource === "snapshot" && <p className="writing-status">Showing saved projects from {formatDate(snapshot.fetchedAt)}. Live GitHub refresh is temporarily unavailable.</p>}
       {repositories.length === 0 && <p className="writing-status">No projects are currently pinned on GitHub.</p>}
 
       <div className="github-activity" id="github">
@@ -97,7 +113,7 @@ export function GitHubSection() {
         <div className="monthly-chart" role="img" aria-label={`Monthly contributions: ${months.map(month => `${month.key}: ${month.count}`).join(", ")}`}>
           {months.map(month => <div className="monthly-column" key={month.key} title={`${month.key}: ${month.count} contributions`}><span className="monthly-value">{month.count}</span><div className="monthly-track"><span style={{ height: `${month.count / maxMonth * 100}%` }} /></div><span className="monthly-label">{month.label}</span></div>)}
         </div>
-        <div className="github-data-note"><p>GitHub contributions include commits, pull requests, issues, and reviews.</p><p>{source === "github" ? "Synced from GitHub" : `Saved GitHub data · ${formatDate(snapshot.fetchedAt)}`}</p></div>
+        <div className="github-data-note"><p>GitHub contributions include commits, pull requests, issues, and reviews.</p><p>{source === "github" ? "Synced from GitHub" : `Saved GitHub data · ${formatDate(data.fetchedAt)}`}</p></div>
       </div>
     </SectionShell>
   );

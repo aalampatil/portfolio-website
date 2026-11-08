@@ -5,8 +5,12 @@ import type { RawGitHubRepository, GitHubData } from "@/types/portfolio";
 export const dynamic = "force-dynamic";
 
 async function githubFetch(url: string): Promise<Response> {
+  const headers: Record<string, string> = { "User-Agent": "aalampatil-portfolio" };
+  if (new URL(url).hostname === "api.github.com" && process.env.GITHUB_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
   const response = await fetch(url, {
-    headers: { "User-Agent": "aalampatil-portfolio" },
+    headers,
     cache: "no-store",
     signal: AbortSignal.timeout(8000),
   });
@@ -29,12 +33,16 @@ export async function GET() {
     githubFetch("https://github.com/users/aalampatil/contributions")
       .then(response => response.text()).then(parseContributions),
   ]);
+  for (const [source, result] of [["repositories", repositories], ["contributions", contributions]] as const) {
+    if (result.status === "rejected") console.warn(`GitHub ${source} refresh failed:`, result.reason);
+  }
   const data: GitHubData = {
     repositories: repositories.status === "fulfilled" ? repositories.value : snapshot.repositories,
     contributions: contributions.status === "fulfilled" ? contributions.value : snapshot.contributions,
-    fetchedAt: snapshot.fetchedAt,
+    fetchedAt: contributions.status === "fulfilled" ? new Date().toISOString() : snapshot.fetchedAt,
     repositorySource: repositories.status === "fulfilled" ? "github" : "snapshot",
     contributionSource: contributions.status === "fulfilled" ? "github" : "snapshot",
   };
-  return Response.json(data, { headers: { "Cache-Control": "public, max-age=0, s-maxage=3600, must-revalidate" } });
+  // Never let a temporary upstream failure cache the checked-in fallback at the CDN.
+  return Response.json(data, { headers: { "Cache-Control": "no-store" } });
 }
