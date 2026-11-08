@@ -1,4 +1,9 @@
-import type { NavItem, Project, ChangelogEntry, BuildUpdate } from "@/types/portfolio";
+import type {
+  NavItem,
+  Project,
+  ChangelogEntry,
+  BuildUpdate,
+} from "@/types/portfolio";
 
 export const navItems: NavItem[] = [
   { id: "projects", label: "Work", number: "01" },
@@ -36,31 +41,31 @@ export const stack = [
 
 export const projects: Project[] = [
   {
-    name: "llop-ap",
+    name: "poll",
     status: "Live",
     method: "GET",
-    endpoint: "/projects/llop-ap",
-    url: "https://llop-ap.aalampatil.online/",
+    endpoint: "/projects/poll",
+    url: "https://poll.aalampatil.in/",
     description:
       "A full-stack polling app for creating polls, sharing public links, collecting responses, and exploring real-time results.",
     tags: ["TypeScript", "React", "Socket.IO"],
   },
   {
-    name: "oidc-ap",
+    name: "oidc",
     status: "Live",
     method: "GET",
-    endpoint: "/projects/oidc-ap",
-    url: "https://oidc-ap.aalampatil.online/",
+    endpoint: "/projects/oidc",
+    url: "https://oidc.aalampatil.in/",
     description:
       "An OpenID Connect project exploring how an application signs users in through an identity provider, maintains a session, and handles the steps of an authentication flow.",
     tags: ["OIDC", "Auth", "Sessions"],
   },
   {
-    name: "deadlink",
+    name: "link",
     status: "Live",
     method: "GET",
-    endpoint: "/projects/deadlink",
-    url: "http://deadlink.sbs/",
+    endpoint: "/projects/link",
+    url: "http://link.aalampatil.in/",
     description:
       "A link-focused web utility. Part of my collection of small, deployed projects for exploring how a focused tool takes shape on the web.",
     tags: ["Web Tool", "Links", "Utility"],
@@ -76,11 +81,11 @@ export const projects: Project[] = [
     tags: ["Search", "Frontend", "Product"],
   },
   {
-    name: "chaicss-ap",
+    name: "chaicss",
     status: "Live",
     method: "GET",
     endpoint: "/projects/chaicss-ap",
-    url: "https://chaicss-ap.aalampatil.online/",
+    url: "https://chaicss.aalampatil.in/",
     description:
       "A CSS experiment in reusable styles and interface patterns. A place to work through how small styling decisions shape a complete page.",
     tags: ["CSS", "UI", "Frontend"],
