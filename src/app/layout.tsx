@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Aalam Patil — Software Developer",
+  title: "Aalam Patil",
   description: "Aalam Patil turns ideas into working software. Explore web apps, APIs, authentication projects, and technical writing.",
 };
 
