@@ -11,7 +11,6 @@ export class WeatherSurfaces {
   measure({ width, height }: SceneSize) {
     const next = new Map<HTMLElement, Surface>();
     document.querySelectorAll<HTMLElement>(SURFACE_SELECTOR).forEach(element => {
-      if (element.closest(".weather-popover")) return;
       const bounds = element.getBoundingClientRect();
       if (bounds.width < 26 || bounds.height < 24 || bounds.height > 100) return;
       const existing = this.surfaces.get(element);

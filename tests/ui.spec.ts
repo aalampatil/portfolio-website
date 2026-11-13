@@ -133,79 +133,92 @@ test("artwork responds to the pointer, pauses, and respects reduced motion", asy
   await page.screenshot({ path: testInfo.outputPath("ink-light.png"), fullPage: true });
 });
 
-test("weather offers only Snow and Sakura, remembers preferences, and turns completely off", async ({ page }, testInfo) => {
-  const toggle = page.getByRole("switch", { name: "Season effects" });
-  const options = page.getByRole("button", { name: "Choose effect" });
-  await expect(toggle).toBeChecked();
-  await options.click();
-  await expect(page.getByRole("radio")).toHaveCount(2);
-  for (const [name, season] of [["Snow", "winter"], ["Sakura", "spring"]]) {
-    await page.getByRole("radio", { name, exact: true }).check();
-    await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", season);
-    await page.clock.runFor(150);
-    await page.screenshot({ path: testInfo.outputPath(`${season}.png`) });
-  }
-  await expect(toggle).toContainText("Sakura");
+test("usual theme has independent Snow and Cherry Blossom toggles with saved preferences", async ({ page }, testInfo) => {
+  const snow = page.getByRole("switch", { name: "Snow effect", exact: true });
+  const blossoms = page.getByRole("switch", { name: "Cherry blossom effect", exact: true });
+  await expect(snow).toBeEnabled();
+  await expect(snow).not.toBeChecked();
+  await expect(blossoms).not.toBeChecked();
+  await expect(page.getByRole("group", { name: "Weather effects" }).getByRole("switch")).toHaveCount(2);
+  await expect(page.getByRole("radio")).toHaveCount(0);
+  await expect(page.locator(".weather-canvas")).toHaveCount(0);
+  await page.getByRole("switch", { name: "Dark mode" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-mode", "light");
+  await snow.click();
+  await expect(page.locator('[data-weather-scene="winter"]')).toHaveCount(1);
+  await blossoms.click();
+  await expect(snow).toBeChecked();
+  await expect(blossoms).toBeChecked();
+  await expect(page.locator(".weather-canvas")).toHaveCount(2);
+  await page.clock.runFor(150);
+  await page.screenshot({ path: testInfo.outputPath("both-weather-effects.png") });
+  await snow.click();
+  await expect(page.locator('[data-weather-scene="winter"]')).toHaveCount(0);
+  await expect(page.locator('[data-weather-scene="spring"]')).toHaveCount(1);
   const petals = await page.locator(".weather-canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL());
   await page.clock.runFor(1000);
   expect(await page.locator(".weather-canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL())).not.toBe(petals);
-  await page.keyboard.press("Escape");
-  await expect(options).toBeFocused();
-  await expect(options).toHaveAttribute("aria-expanded", "false");
+  await page.screenshot({ path: testInfo.outputPath("cherry-blossom.png") });
+  await expect(page.locator("html")).toHaveAttribute("data-mode", "light");
   await page.reload({ waitUntil: "domcontentloaded" });
-  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", "spring");
-  await toggle.click();
+  await expect(snow).not.toBeChecked();
+  await expect(blossoms).toBeChecked();
+  await expect(page.locator("html")).toHaveAttribute("data-mode", "light");
+  await blossoms.focus();
+  await page.keyboard.press("Space");
   await expect(page.locator("[data-weather-scene]")).toHaveCount(0);
   await page.reload({ waitUntil: "domcontentloaded" });
-  await expect(toggle).not.toBeChecked();
+  await expect(snow).not.toBeChecked();
+  await expect(blossoms).not.toBeChecked();
   await expect(page.locator(".weather-canvas")).toHaveCount(0);
 });
 
-test("saved effects that are no longer offered fall back to Snow", async ({ page }) => {
-  await page.evaluate(() => localStorage.setItem("portfolio-weather-v1", JSON.stringify({ enabled: false, season: "monsoon" })));
+test("weather migrates previous selections and saves the two toggles independently", async ({ page }) => {
+  await page.evaluate(() => localStorage.setItem("portfolio-weather-v1", JSON.stringify({ enabled: true, season: "spring" })));
   await page.reload({ waitUntil: "domcontentloaded" });
-  const toggle = page.getByRole("switch", { name: "Season effects" });
-  await expect(toggle).toBeEnabled();
-  await expect(toggle).not.toBeChecked();
-  await expect(toggle).toContainText("Snow");
-  await toggle.click();
-  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", "winter");
+  const snow = page.getByRole("switch", { name: "Snow effect", exact: true });
+  const blossoms = page.getByRole("switch", { name: "Cherry blossom effect", exact: true });
+  await expect(snow).toBeEnabled();
+  await expect(snow).not.toBeChecked();
+  await expect(blossoms).toBeChecked();
+  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", "spring");
+  await snow.click();
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(snow).toBeChecked();
+  await expect(blossoms).toBeChecked();
+  await expect(page.locator(".weather-canvas")).toHaveCount(2);
 });
 
-test("weather options fit mobile screens and respect reduced motion", async ({ page }) => {
-  const options = page.getByRole("button", { name: "Choose effect" });
+test("weather toggles fit mobile screens and respect reduced motion", async ({ page }, testInfo) => {
   for (const width of [1440, 1024, 768, 760, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
-    await options.click();
-    const bounds = await page.locator(".weather-popover").boundingBox();
-    expect(bounds).not.toBeNull();
-    expect(bounds!.x).toBeGreaterThanOrEqual(0);
-    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    for (const name of ["Snow effect", "Cherry blossom effect"]) {
+      const bounds = await page.getByRole("switch", { name, exact: true }).boundingBox();
+      expect(bounds).not.toBeNull();
+      expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
-    await page.keyboard.press("Escape");
   }
+  await page.screenshot({ path: testInfo.outputPath("weather-toggles-mobile.png") });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload({ waitUntil: "domcontentloaded" });
-  const toggle = page.getByRole("switch", { name: "Season effects" });
-  await expect(toggle).toBeEnabled();
-  await expect(toggle).not.toBeChecked();
-  await options.click();
-  await page.getByRole("radio", { name: "Sakura", exact: true }).check();
-  await page.keyboard.press("Escape");
-  await expect(page.locator(".weather-canvas")).toHaveCount(0);
-  await toggle.click();
-  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", "spring");
-  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-motion", "still");
-  await page.clock.runFor(100);
-  const still = await page.locator(".weather-canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL());
-  await page.clock.runFor(1000);
-  expect(await page.locator(".weather-canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL())).toBe(still);
+  for (const [name, season] of [["Snow effect", "winter"], ["Cherry blossom effect", "spring"]]) {
+    const toggle = page.getByRole("switch", { name, exact: true });
+    await expect(toggle).toBeEnabled();
+    await expect(toggle).not.toBeChecked();
+    await toggle.click();
+    const scene = page.locator(`[data-weather-scene="${season}"]`);
+    await expect(scene).toHaveAttribute("data-motion", "still");
+    await page.clock.runFor(100);
+    const still = await scene.locator("canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL());
+    await page.clock.runFor(1000);
+    expect(await scene.locator("canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL())).toBe(still);
+  }
 });
 
 test("winter snow builds on real buttons and brushes away on hover", async ({ page }, testInfo) => {
-  await page.getByRole("button", { name: "Choose effect" }).click();
-  await page.getByRole("radio", { name: "Snow", exact: true }).check();
-  await page.keyboard.press("Escape");
+  await page.getByRole("switch", { name: "Snow effect", exact: true }).click();
   await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", "winter");
   const button = page.getByRole("link", { name: "View selected work" });
   const bounds = (await button.boundingBox())!;

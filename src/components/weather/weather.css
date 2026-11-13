@@ -1,36 +1,16 @@
-/* The decorative canvas never takes pointer or keyboard input. */
+/* Weather is an optional overlay; the usual Ink theme supplies the page colors. */
 .weather-layer { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; contain: strict; }
 .weather-canvas { display: block; width: 100%; height: 100%; }
-.weather-control { position: relative; --weather-accent: #b7d8f1; flex-shrink: 0; }
-.weather-control[data-season="spring"] { --weather-accent: #e5a7bd; }
-:root[data-mode="light"] .weather-control { --weather-accent: #446e92; }
-:root[data-mode="light"] .weather-control[data-season="spring"] { --weather-accent: #ad4e71; }
-.weather-buttons { display: flex; border: 1px solid var(--border); background: var(--secondary-background); }
-.weather-toggle, .weather-options { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; border: 0; background: transparent; color: var(--foreground); cursor: pointer; font: 10px "IBM Plex Mono", monospace; }
-.weather-toggle { padding: 8px 10px; white-space: nowrap; }
+.weather-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+.weather-toggle { --weather-accent: #b7d8f1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 8px 10px; border: 1px solid var(--border); background: var(--secondary-background); color: var(--foreground); cursor: pointer; font: 10px "IBM Plex Mono", monospace; white-space: nowrap; }
+.weather-toggle[data-season="spring"] { --weather-accent: #e5a7bd; }
+:root[data-mode="light"] .weather-toggle { --weather-accent: #446e92; }
+:root[data-mode="light"] .weather-toggle[data-season="spring"] { --weather-accent: #ad4e71; }
 .weather-toggle > svg { color: var(--weather-accent); }
 .weather-toggle-state { padding-left: 1px; color: var(--muted); font-size: 8px; }
 .weather-toggle[aria-checked="true"] .weather-toggle-state { color: var(--weather-accent); }
-.weather-options { width: 29px; border-left: 1px solid var(--border); color: var(--muted); }
-.weather-options > svg { transition: transform .2s; }
-.weather-options[aria-expanded="true"] > svg { transform: rotate(180deg); }
-.weather-toggle:hover, .weather-options:hover { background: var(--hover-background); }
-.weather-popover { position: absolute; right: 0; top: calc(100% + 13px); z-index: 70; width: 284px; padding: 20px; border: 1px solid var(--border); border-top: 2px solid var(--weather-accent); background: var(--secondary-background); box-shadow: 0 14px 45px #00000030; color: var(--foreground); }
-.weather-eyebrow { margin: 0 0 14px; color: var(--weather-accent); font: 8px "IBM Plex Mono", monospace; letter-spacing: .15em; text-transform: uppercase; }
-.weather-popover fieldset { min-width: 0; padding: 0; margin: 0; border: 0; }
-.weather-popover legend { padding: 0; margin-bottom: 16px; font: 21px Georgia, serif; letter-spacing: -.03em; }
-.weather-season-option { position: relative; display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px; border: 1px solid var(--border); cursor: pointer; color: var(--muted); font: 10px "IBM Plex Mono", monospace; }
-.weather-season-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.weather-season-option:hover { background: var(--hover-background); color: var(--foreground); }
-.weather-season-option:has(input:checked) { border-color: var(--weather-accent); color: var(--weather-accent); background: color-mix(in srgb, var(--weather-accent) 7%, transparent); }
-.weather-season-option:has(input:focus-visible) { outline: 2px solid var(--weather-accent); outline-offset: 3px; }
-.weather-season-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
-.weather-description { min-height: 36px; margin: 16px 0; font-size: 11px; line-height: 1.7; color: var(--muted); }
-.weather-footnote { display: flex; align-items: center; gap: 7px; padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); font: 8px/1.6 "IBM Plex Mono", monospace; }
-.weather-live-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--symbol); }
-.weather-live-dot.is-on { background: var(--weather-accent); }
+.weather-toggle:hover { border-color: var(--weather-accent); background: var(--hover-background); }
 
-/* Make room for both controls before the header would become crowded. */
 @media (min-width: 761px) and (max-width: 1180px) {
   .site-header { flex-wrap: wrap; gap: 16px; }
   .site-header .header-actions { margin-left: auto; }
@@ -38,14 +18,8 @@
 }
 @media (max-width: 760px) {
   .site-header { flex-wrap: wrap; }
-  .site-header .header-actions { position: relative; flex: 1 1 100%; justify-content: space-between; gap: 8px; }
-  .weather-control { position: static; }
+  .site-header .header-actions { flex: 1 1 100%; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+  .weather-controls { order: 1; flex: 1 1 100%; }
   .site-header .mode-toggle { min-height: 40px; padding-inline: 9px; font-size: 9px; gap: 6px; }
-  .weather-toggle, .weather-options { min-height: 40px; }
-  .weather-popover { right: auto; left: 0; max-width: 90vw; }
-}
-@media (max-width: 400px) {
-  .site-header .header-actions { flex-wrap: wrap; justify-content: flex-start; gap: 10px; }
-  .site-header .header-actions .visitor-count { flex: 1 1 100%; }
-  .site-header .header-actions .header-link { margin-left: auto; }
+  .weather-toggle { min-height: 40px; }
 }
