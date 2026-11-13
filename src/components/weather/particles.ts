@@ -3,14 +3,14 @@ import type { Burst, Particle, SceneSize } from "./types";
 
 export function createParticles(season: Season, size: SceneSize): Particle[] {
   const density = Math.max(0.4, Math.min(1.25, (size.width * size.height) / 1_150_000));
-  const count = { winter: 170, monsoon: 200, summer: 26, spring: 30, autumn: 23 }[season];
+  const count = season === "winter" ? 170 : 38;
   return Array.from({ length: Math.round(count * density) }, () => {
     const depth = 0.2 + Math.random() * 0.8;
     return {
       x: Math.random() * size.width,
       y: Math.random() * size.height,
-      radius: season === "winter" ? 0.6 + depth * 2.5 : 2 + depth * 4,
-      speed: season === "monsoon" ? 500 + depth * 650 : season === "summer" ? -5 - depth * 9 : 14 + depth * 38,
+      radius: season === "winter" ? 0.6 + depth * 2.5 : 2 + depth * 5.5,
+      speed: 14 + depth * (season === "winter" ? 38 : 26),
       depth,
       phase: Math.random() * Math.PI * 2,
       rotation: Math.random() * Math.PI * 2,
@@ -53,74 +53,34 @@ export function drawParticle(ctx: CanvasRenderingContext2D, particle: Particle, 
   if (season === "winter") {
     const diameter = radius * 4;
     ctx.drawImage(sprite, x - diameter / 2, y - diameter / 2, diameter, diameter);
-  } else if (season === "monsoon") {
-    ctx.strokeStyle = "#a8c5df";
-    ctx.lineWidth = 0.5 + depth * 0.65;
-    ctx.globalAlpha = 0.13 + depth * 0.3;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x - 3 - depth * 4, y + 8 + depth * 20);
-    ctx.stroke();
-  } else if (season === "summer") {
-    ctx.fillStyle = "#f8dc9a";
-    ctx.globalAlpha = 0.12 + depth * 0.25;
-    ctx.beginPath();
-    ctx.arc(x, y, radius * 0.22, 0, Math.PI * 2);
-    ctx.fill();
   } else {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation);
     ctx.scale(1, 0.35 + Math.abs(Math.cos(rotation)) * 0.65);
-    ctx.fillStyle = season === "spring" ? (depth > 0.6 ? "#f2b8c7" : "#e8ced6") : (depth > 0.6 ? "#cc8644" : "#bd5735");
+    const petal = ctx.createLinearGradient(-radius, 0, radius, 0);
+    petal.addColorStop(0, "#d987a4");
+    petal.addColorStop(0.5, depth > 0.6 ? "#f2b8c7" : "#e8ced6");
+    petal.addColorStop(1, "#fce9ef");
+    ctx.fillStyle = petal;
     ctx.beginPath();
     ctx.moveTo(-radius, 0);
-    ctx.bezierCurveTo(-radius * 0.5, -radius, radius * 0.8, -radius * 0.8, radius, 0);
-    ctx.bezierCurveTo(radius * 0.4, radius * 0.8, -radius * 0.5, radius * 0.8, -radius, 0);
+    ctx.bezierCurveTo(-radius * 0.55, -radius * 0.85, radius * 0.5, -radius * 0.85, radius, -radius * 0.3);
+    // Sakura petals have a small notch at their rounded tip.
+    ctx.lineTo(radius * 0.65, 0);
+    ctx.lineTo(radius, radius * 0.28);
+    ctx.bezierCurveTo(radius * 0.45, radius * 0.85, -radius * 0.65, radius * 0.8, -radius, 0);
+    ctx.closePath();
     ctx.fill();
-    if (season === "autumn") {
-      ctx.strokeStyle = "rgba(94,48,21,0.45)";
-      ctx.lineWidth = 0.65;
-      ctx.beginPath();
-      ctx.moveTo(-radius, 0);
-      ctx.lineTo(radius * 0.7, 0);
-      ctx.stroke();
-    }
+    ctx.strokeStyle = "rgba(188,100,133,0.3)";
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
     ctx.restore();
   }
   ctx.globalAlpha = 1;
 }
 
-export function drawSunshine(ctx: CanvasRenderingContext2D, size: SceneSize, time: number) {
-  const x = size.width * 0.88;
-  const y = -35;
-  const reach = Math.min(850, size.width * 0.85);
-  const glow = ctx.createRadialGradient(x, y, 0, x, y, reach);
-  glow.addColorStop(0, "rgba(255,221,141,0.2)");
-  glow.addColorStop(0.3, "rgba(250,196,102,0.065)");
-  glow.addColorStop(1, "rgba(244,177,76,0)");
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, size.width, size.height);
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(Math.sin(time * 0.035) * 0.045);
-  for (let i = 0; i < 7; i++) {
-    const angle = 0.6 + i * 0.25;
-    const ray = ctx.createLinearGradient(0, 0, Math.cos(angle) * reach, Math.sin(angle) * reach);
-    ray.addColorStop(0, "rgba(255,230,161,0.07)");
-    ray.addColorStop(1, "rgba(255,223,152,0)");
-    ctx.fillStyle = ray;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(Math.cos(angle) * reach, Math.sin(angle) * reach);
-    ctx.lineTo(Math.cos(angle + 0.065) * reach, Math.sin(angle + 0.065) * reach);
-    ctx.closePath();
-    ctx.fill();
-  }
-  ctx.restore();
-}
-
-export function drawBursts(ctx: CanvasRenderingContext2D, bursts: Burst[], dt: number, rain: boolean) {
+export function drawBursts(ctx: CanvasRenderingContext2D, bursts: Burst[], dt: number) {
   for (let i = bursts.length - 1; i >= 0; i--) {
     const burst = bursts[i];
     burst.life -= dt;
@@ -130,9 +90,9 @@ export function drawBursts(ctx: CanvasRenderingContext2D, bursts: Burst[], dt: n
     }
     burst.x += burst.vx * dt;
     burst.y += burst.vy * dt;
-    burst.vy += (rain ? 180 : 65) * dt;
+    burst.vy += 65 * dt;
     ctx.globalAlpha = (burst.life / burst.duration) * 0.65;
-    ctx.fillStyle = rain ? "#b6d9ed" : "#f2f8ff";
+    ctx.fillStyle = "#f2f8ff";
     ctx.beginPath();
     ctx.arc(burst.x, burst.y, burst.radius, 0, Math.PI * 2);
     ctx.fill();

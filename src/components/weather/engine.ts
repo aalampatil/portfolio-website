@@ -1,5 +1,5 @@
 import type { Season } from "@/lib/seasons";
-import { createParticles, createSnowSprite, drawBursts, drawParticle, drawSunshine } from "./particles";
+import { createParticles, createSnowSprite, drawBursts, drawParticle } from "./particles";
 import { WeatherSurfaces } from "./surfaces";
 import type { Burst, SceneSize } from "./types";
 
@@ -20,11 +20,11 @@ export function startWeatherScene(canvas: HTMLCanvasElement, season: Season, red
   let disposed = false;
   let wind = 0;
   let targetWind = 0;
-  const catchesWeather = season === "winter" || season === "monsoon";
+  const catchesWeather = season === "winter";
 
   function burst(x: number, y: number, count: number) {
     for (let i = 0; i < count && bursts.length < 70; i++) {
-      const duration = season === "monsoon" ? 0.25 + Math.random() * 0.2 : 0.6 + Math.random() * 0.5;
+      const duration = 0.6 + Math.random() * 0.5;
       bursts.push({
         x, y, vx: (Math.random() - 0.5) * 90, vy: -12 - Math.random() * 50,
         life: duration, duration, radius: 0.5 + Math.random() * 1.4,
@@ -55,10 +55,9 @@ export function startWeatherScene(canvas: HTMLCanvasElement, season: Season, red
     }
     ctx.clearRect(0, 0, size.width, size.height);
 
-    if (season === "summer") drawSunshine(ctx, size, elapsed);
-    if (season === "winter" || season === "monsoon") {
+    if (season === "winter") {
       const haze = ctx.createLinearGradient(0, 0, 0, size.height * 0.65);
-      haze.addColorStop(0, season === "winter" ? "rgba(144,183,222,0.055)" : "rgba(85,122,164,0.07)");
+      haze.addColorStop(0, "rgba(144,183,222,0.055)");
       haze.addColorStop(1, "rgba(120,160,205,0)");
       ctx.fillStyle = haze;
       ctx.fillRect(0, 0, size.width, size.height);
@@ -66,32 +65,30 @@ export function startWeatherScene(canvas: HTMLCanvasElement, season: Season, red
 
     for (const particle of particles) {
       const previousY = particle.y;
-      const breeze = Math.sin(elapsed * 0.45 + particle.phase) * 16;
-      particle.y += particle.speed * dt;
-      particle.x += (season === "monsoon" ? -140 - particle.depth * 100 : breeze + wind * particle.depth + 7) * dt;
-      particle.rotation += dt * (0.5 + particle.depth);
+      const breeze = Math.sin(elapsed * 0.45 + particle.phase) * (season === "spring" ? 24 : 16);
+      const flutter = season === "spring" ? Math.sin(elapsed * 0.9 + particle.phase) * 5 : 0;
+      particle.y += (particle.speed + flutter) * dt;
+      particle.x += (breeze + wind * particle.depth + 7) * dt;
+      particle.rotation += dt * (0.5 + particle.depth) * Math.cos(particle.phase);
 
       if (catchesWeather && particle.depth > 0.35 && !reducedMotion) {
         const surface = surfaces.findCollision(particle.x, previousY, particle.y);
         if (surface) {
-          if (season === "winter") surfaces.settle(surface, particle.x, particle.radius);
-          else burst(particle.x, surface.bounds.top, 3);
+          surfaces.settle(surface, particle.x, particle.radius);
           respawn(particle);
         }
       }
       if (particle.y > size.height + 30) {
-        if (season === "monsoon" && Math.random() > 0.65) burst(particle.x, size.height - 2, 2);
         respawn(particle);
       }
-      if (season === "summer" && particle.y < -15) particle.y = size.height + 10;
       if (particle.x < -40) particle.x = size.width + 30;
       if (particle.x > size.width + 40) particle.x = -30;
       drawParticle(ctx, particle, season, sprite);
     }
 
     if (season === "winter") surfaces.update(dt);
-    if (catchesWeather) surfaces.draw(ctx, season, elapsed);
-    drawBursts(ctx, bursts, dt, season === "monsoon");
+    if (catchesWeather) surfaces.draw(ctx, elapsed);
+    drawBursts(ctx, bursts, dt);
     if (!reducedMotion) frame = requestAnimationFrame(render);
   }
 

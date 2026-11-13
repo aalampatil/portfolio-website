@@ -1,4 +1,3 @@
-import type { Season } from "@/lib/seasons";
 import type { SceneSize, Surface } from "./types";
 
 // Only substantial controls catch snow; the contribution calendar stays clear.
@@ -70,19 +69,9 @@ export class WeatherSurfaces {
     }
   }
 
-  draw(ctx: CanvasRenderingContext2D, season: Season, time: number) {
+  draw(ctx: CanvasRenderingContext2D, time: number) {
     for (const { bounds, snow } of this.visible) {
       const { left, top, width } = bounds;
-      if (season === "monsoon") {
-        const sheen = ctx.createLinearGradient(0, top - 1, 0, top + 4);
-        sheen.addColorStop(0, "rgba(172,216,237,0.4)");
-        sheen.addColorStop(1, "rgba(133,188,221,0)");
-        ctx.fillStyle = sheen;
-        ctx.fillRect(left + 2, top - 1, width - 4, 5);
-        continue;
-      }
-      if (season !== "winter") continue;
-
       const depth = Math.max(...snow);
       const base = top + Math.min(5, depth * 0.32);
       const gradient = ctx.createLinearGradient(0, top - depth, 0, base + 3);

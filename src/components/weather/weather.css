@@ -2,15 +2,9 @@
 .weather-layer { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; contain: strict; }
 .weather-canvas { display: block; width: 100%; height: 100%; }
 .weather-control { position: relative; --weather-accent: #b7d8f1; flex-shrink: 0; }
-.weather-control[data-season="summer"] { --weather-accent: #e7bb69; }
 .weather-control[data-season="spring"] { --weather-accent: #e5a7bd; }
-.weather-control[data-season="monsoon"] { --weather-accent: #8dbbdc; }
-.weather-control[data-season="autumn"] { --weather-accent: #d89a61; }
 :root[data-mode="light"] .weather-control { --weather-accent: #446e92; }
-:root[data-mode="light"] .weather-control[data-season="summer"] { --weather-accent: #956411; }
 :root[data-mode="light"] .weather-control[data-season="spring"] { --weather-accent: #ad4e71; }
-:root[data-mode="light"] .weather-control[data-season="monsoon"] { --weather-accent: #326d98; }
-:root[data-mode="light"] .weather-control[data-season="autumn"] { --weather-accent: #a35c25; }
 .weather-buttons { display: flex; border: 1px solid var(--border); background: var(--secondary-background); }
 .weather-toggle, .weather-options { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; border: 0; background: transparent; color: var(--foreground); cursor: pointer; font: 10px "IBM Plex Mono", monospace; }
 .weather-toggle { padding: 8px 10px; white-space: nowrap; }
@@ -30,10 +24,7 @@
 .weather-season-option:hover { background: var(--hover-background); color: var(--foreground); }
 .weather-season-option:has(input:checked) { border-color: var(--weather-accent); color: var(--weather-accent); background: color-mix(in srgb, var(--weather-accent) 7%, transparent); }
 .weather-season-option:has(input:focus-visible) { outline: 2px solid var(--weather-accent); outline-offset: 3px; }
-.weather-season-option small { display: block; margin-top: 5px; color: var(--muted); font-size: 8px; }
-.weather-auto-dot { width: 6px; height: 6px; margin-left: auto; border-radius: 50%; background: currentColor; }
-.weather-season-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-top: 9px; }
-.weather-season-grid > :last-child { grid-column: 1 / -1; }
+.weather-season-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
 .weather-description { min-height: 36px; margin: 16px 0; font-size: 11px; line-height: 1.7; color: var(--muted); }
 .weather-footnote { display: flex; align-items: center; gap: 7px; padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); font: 8px/1.6 "IBM Plex Mono", monospace; }
 .weather-live-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--symbol); }
