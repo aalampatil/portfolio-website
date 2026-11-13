@@ -9,7 +9,7 @@ Next.js portfolio in a Japanese-inspired Ink theme with dark charcoal and light 
 - `npm run lint` runs ESLint.
 - `npm run typecheck` checks the application with strict TypeScript.
 - `npm test` runs the GitHub import and calendar tests.
-- `npm run test:browser` checks modes, translations, pinned-project refresh, and mobile layout with Playwright. Run `npx playwright install chromium` first, or set `PLAYWRIGHT_EXECUTABLE_PATH` to an installed Chromium browser.
+- `npm run test:browser` checks modes, translations, pinned-project refresh, mobile layout, and seasonal weather with Playwright. Run `npx playwright install chromium` first, or set `PLAYWRIGHT_EXECUTABLE_PATH` to an installed Chromium browser.
 - `npm run start` serves the production build.
 - `npm run sync:github` refreshes the checked-in public GitHub snapshot.
 
@@ -18,6 +18,24 @@ The project list shows only repositories pinned on the GitHub profile, in profil
 Development output lives in `.next-dev`; production build and start use `.next`. This keeps `npm run build` from overwriting a running development server’s bundles and React client manifests. Restart `npm run dev` once after changing this configuration.
 
 Next.js generates `next-env.d.ts` for the active build directory. It is ignored so switching between development and production does not create generated-file changes in Git.
+
+## Seasonal weather
+
+The header weather switch turns effects on or off; its adjacent arrow opens the season picker. Automatic mode follows a northern India calendar: winter November–February, spring March, summer April–May, monsoon June–September, and autumn October. Each season can also be selected manually. The on/off preference and season are saved locally under `portfolio-weather-v1`.
+
+Winter adds layered, wind-driven snow that collects on visible buttons and action links. Hover, focus, or tap brushes the snow off. Monsoon adds angled rain, impact splashes, and wet button edges; summer adds warm rays and sunlit dust; spring and autumn add drifting petals and leaves. The weather canvas lets all pointer input through. Effects pause in hidden tabs and stop completely when switched off. Reduced-motion visitors start with weather off; explicitly enabling it displays a still scene.
+
+Weather code is kept separate from portfolio content:
+
+- `src/lib/seasons.ts` owns season types, display details, preference validation, and the automatic calendar.
+- `src/components/SeasonalWeather.tsx` owns accessible controls, preferences, and lazy loading of the scene.
+- `src/components/weather/WeatherScene.tsx` connects the canvas to the animation lifecycle.
+- `src/components/weather/engine.ts` owns frame scheduling, input, observers, and cleanup.
+- `src/components/weather/particles.ts` creates and draws flakes, rain, petals, leaves, sunbeams, and impact particles.
+- `src/components/weather/surfaces.ts` measures real controls, detects collisions, and draws accumulating snow or wet edges.
+- `src/components/weather/types.ts` and `weather.css` contain scene data types and weather styles.
+
+Add `data-weather-surface` to another substantial control to let it collect weather. Particle density and drawing live in `particles.ts`; buildup limits and deposition rates live in `surfaces.ts`.
 
 ## Structure
 
