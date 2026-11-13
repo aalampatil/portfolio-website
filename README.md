@@ -21,14 +21,15 @@ Next.js generates `next-env.d.ts` for the active build directory. It is ignored 
 
 ## Seasonal weather
 
-The header weather switch turns effects on or off; its adjacent arrow offers just **Snow** and **Sakura**, matching the Japanese-inspired design. Snow is the default. The on/off preference and selected effect are saved locally under `portfolio-weather-v1`. Older saved selections that are no longer offered fall back to Snow while preserving the on/off preference.
+The usual Japanese-inspired Ink theme is the default, with optional **Snow** and **Cherry blossom** switches in the header. Each effect has its own on/off toggle, so visitors can enable either, both, or neither. Both start off on a fresh visit. Independent preferences are saved locally under `portfolio-weather-v2`; earlier `portfolio-weather-v1` selections are carried over without changing the light/dark theme.
 
-Snow adds layered, wind-driven flakes that collect on visible buttons and action links. Hover, focus, or tap brushes the snow off. Sakura adds softly shaded, notched cherry blossom petals with varied depth, gentle flutter, and tumbling motion. The weather canvas lets all pointer input through. Effects pause in hidden tabs and stop completely when switched off. Reduced-motion visitors start with weather off; explicitly enabling an effect displays a still scene.
+Snow adds layered, wind-driven flakes that collect on visible buttons and action links. Hover, focus, or tap brushes the snow off. Cherry blossom weather adds softly shaded, notched sakura petals with varied depth, gentle flutter, and tumbling motion. The weather canvases let all pointer input through. Effects pause in hidden tabs and stop completely when switched off. Reduced-motion preferences display still scenes whenever an effect is enabled, including when restoring a saved preference.
 
 Weather code is kept separate from portfolio content:
 
 - `src/lib/seasons.ts` owns the two supported effects, their display details, and preference validation.
-- `src/components/SeasonalWeather.tsx` owns accessible controls, preferences, and lazy loading of the scene.
+- `src/components/SeasonalWeather.tsx` renders the two accessible switches and lazily loads the enabled scenes.
+- `src/components/weather/useWeatherPreferences.ts` owns independent preferences, migration from the previous picker, and reduced-motion settings.
 - `src/components/weather/WeatherScene.tsx` connects the canvas to the animation lifecycle.
 - `src/components/weather/engine.ts` owns frame scheduling, input, observers, and cleanup.
 - `src/components/weather/particles.ts` creates and draws snowflakes, sakura petals, and brushed-off snow.
