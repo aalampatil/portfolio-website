@@ -3,7 +3,7 @@ import type { Burst, Particle, SceneSize } from "./types";
 
 export function createParticles(season: Season, size: SceneSize): Particle[] {
   const density = Math.max(0.4, Math.min(1.25, (size.width * size.height) / 1_150_000));
-  const count = season === "winter" ? 170 : 38;
+  const count = season === "winter" ? 170 : 80;
   return Array.from({ length: Math.round(count * density) }, () => {
     const depth = 0.2 + Math.random() * 0.8;
     return {
