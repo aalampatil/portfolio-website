@@ -132,3 +132,87 @@ test("artwork responds to the pointer, pauses, and respects reduced motion", asy
   await page.getByRole("switch", { name: "Dark mode" }).click();
   await page.screenshot({ path: testInfo.outputPath("ink-light.png"), fullPage: true });
 });
+
+test("weather switches seasons, remembers preferences, and turns completely off", async ({ page }, testInfo) => {
+  const toggle = page.getByRole("switch", { name: "Season effects" });
+  const options = page.getByRole("button", { name: "Choose season" });
+  await expect(toggle).toBeChecked();
+  await options.click();
+  for (const [name, season] of [["Winter", "winter"], ["Monsoon", "monsoon"], ["Summer", "summer"], ["Spring", "spring"], ["Autumn", "autumn"]]) {
+    await page.getByRole("radio", { name, exact: true }).check();
+    await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", season);
+    await page.clock.runFor(150);
+    await page.screenshot({ path: testInfo.outputPath(`${season}.png`) });
+  }
+  await page.keyboard.press("Escape");
+  await expect(options).toBeFocused();
+  await expect(options).toHaveAttribute("aria-expanded", "false");
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", "autumn");
+  await toggle.click();
+  await expect(page.locator("[data-weather-scene]")).toHaveCount(0);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(toggle).not.toBeChecked();
+  await expect(page.locator(".weather-canvas")).toHaveCount(0);
+});
+
+test("weather options fit mobile screens and respect reduced motion", async ({ page }) => {
+  const options = page.getByRole("button", { name: "Choose season" });
+  for (const width of [1440, 1024, 768, 760, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await options.click();
+    const bounds = await page.locator(".weather-popover").boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+    await page.keyboard.press("Escape");
+  }
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload({ waitUntil: "domcontentloaded" });
+  const toggle = page.getByRole("switch", { name: "Season effects" });
+  await expect(toggle).not.toBeChecked();
+  await toggle.click();
+  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-motion", "still");
+  await page.clock.runFor(100);
+  const still = await page.locator(".weather-canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL());
+  await page.clock.runFor(1000);
+  expect(await page.locator(".weather-canvas").evaluate(canvas => (canvas as HTMLCanvasElement).toDataURL())).toBe(still);
+});
+
+test("winter snow builds on real buttons and brushes away on hover", async ({ page }, testInfo) => {
+  await page.getByRole("button", { name: "Choose season" }).click();
+  await page.getByRole("radio", { name: "Winter", exact: true }).check();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("[data-weather-scene]")).toHaveAttribute("data-weather-scene", "winter");
+  const button = page.getByRole("link", { name: "View selected work" });
+  const bounds = (await button.boundingBox())!;
+  // Read only the white snow pixels above the button, excluding atmospheric haze.
+  async function snowPixels() {
+    return page.locator(".weather-canvas").evaluate((element, rect) => {
+      const canvas = element as HTMLCanvasElement;
+      const scale = canvas.width / window.innerWidth;
+      const pixels = canvas.getContext("2d")!.getImageData(
+        Math.round((rect.x + 5) * scale), Math.round((rect.y - 16) * scale),
+        Math.round((rect.width - 10) * scale), Math.round(15 * scale),
+      ).data;
+      let count = 0;
+      for (let i = 0; i < pixels.length; i += 4) {
+        if (pixels[i] > 180 && pixels[i + 1] > 180 && pixels[i + 2] > 180 && pixels[i + 3] > 180) count++;
+      }
+      return count;
+    }, bounds);
+  }
+  await page.clock.runFor(100);
+  const initial = await snowPixels();
+  await page.clock.runFor(25000);
+  const accumulated = await snowPixels();
+  expect(accumulated).toBeGreaterThan(initial + 100);
+  await page.screenshot({ path: testInfo.outputPath("winter-snow.png") });
+  await button.hover();
+  await page.clock.runFor(1500);
+  expect(await snowPixels()).toBeLessThan(accumulated * 0.6);
+  // The original link remains usable beneath the decorative canvas.
+  await button.click();
+  await expect(page).toHaveURL(/#projects$/);
+});
