@@ -21,18 +21,18 @@ Next.js generates `next-env.d.ts` for the active build directory. It is ignored 
 
 ## Seasonal weather
 
-The header weather switch turns effects on or off; its adjacent arrow opens the season picker. Automatic mode follows a northern India calendar: winter November–February, spring March, summer April–May, monsoon June–September, and autumn October. Each season can also be selected manually. The on/off preference and season are saved locally under `portfolio-weather-v1`.
+The header weather switch turns effects on or off; its adjacent arrow offers just **Snow** and **Sakura**, matching the Japanese-inspired design. Snow is the default. The on/off preference and selected effect are saved locally under `portfolio-weather-v1`. Older saved selections that are no longer offered fall back to Snow while preserving the on/off preference.
 
-Winter adds layered, wind-driven snow that collects on visible buttons and action links. Hover, focus, or tap brushes the snow off. Monsoon adds angled rain, impact splashes, and wet button edges; summer adds warm rays and sunlit dust; spring and autumn add drifting petals and leaves. The weather canvas lets all pointer input through. Effects pause in hidden tabs and stop completely when switched off. Reduced-motion visitors start with weather off; explicitly enabling it displays a still scene.
+Snow adds layered, wind-driven flakes that collect on visible buttons and action links. Hover, focus, or tap brushes the snow off. Sakura adds softly shaded, notched cherry blossom petals with varied depth, gentle flutter, and tumbling motion. The weather canvas lets all pointer input through. Effects pause in hidden tabs and stop completely when switched off. Reduced-motion visitors start with weather off; explicitly enabling an effect displays a still scene.
 
 Weather code is kept separate from portfolio content:
 
-- `src/lib/seasons.ts` owns season types, display details, preference validation, and the automatic calendar.
+- `src/lib/seasons.ts` owns the two supported effects, their display details, and preference validation.
 - `src/components/SeasonalWeather.tsx` owns accessible controls, preferences, and lazy loading of the scene.
 - `src/components/weather/WeatherScene.tsx` connects the canvas to the animation lifecycle.
 - `src/components/weather/engine.ts` owns frame scheduling, input, observers, and cleanup.
-- `src/components/weather/particles.ts` creates and draws flakes, rain, petals, leaves, sunbeams, and impact particles.
-- `src/components/weather/surfaces.ts` measures real controls, detects collisions, and draws accumulating snow or wet edges.
+- `src/components/weather/particles.ts` creates and draws snowflakes, sakura petals, and brushed-off snow.
+- `src/components/weather/surfaces.ts` measures real controls, detects collisions, and draws accumulating snow.
 - `src/components/weather/types.ts` and `weather.css` contain scene data types and weather styles.
 
 Add `data-weather-surface` to another substantial control to let it collect weather. Particle density and drawing live in `particles.ts`; buildup limits and deposition rates live in `surfaces.ts`.
